@@ -1,0 +1,58 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: laravel-inventory
+    container_name: laravel-inventory
+    restart: unless-stopped
+    working_dir: /var/www
+    volumes:
+      - ./:/var/www:cached
+    networks:
+      - laravel_shared_net
+
+  webserver:
+    image: nginx:latest
+    container_name: inventory-nginx
+    restart: unless-stopped
+    ports:
+      - '8002:80'
+    volumes:
+      - ./:/var/www:cached
+      - ./docker/nginx/conf.d:/etc/nginx/conf.d
+    networks:
+      - laravel_shared_net
+
+  db3:
+    image: mysql:8.0
+    container_name: inventory-mysql
+    restart: unless-stopped
+    ports:
+      - '3310:3306'
+    environment:
+      MYSQL_DATABASE: inventory_db
+      MYSQL_ROOT_PASSWORD: Qwe123!@
+    volumes:
+      - dbdata-inventory:/var/lib/mysql
+    networks:
+      - laravel_shared_net
+
+  redis:
+    image: redis:7-alpine
+    container_name: inventory-redis
+    restart: unless-stopped
+    ports:
+      - "6382:6379"
+    volumes:
+      - redisdata-inventory:/data
+    networks:
+      - laravel_shared_net
+
+volumes:
+  dbdata-inventory:
+  redisdata-inventory:
+
+networks:
+  laravel_shared_net:
+    external: true
