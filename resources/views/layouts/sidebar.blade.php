@@ -6,7 +6,7 @@
     </div>
 
     <ul class="nav">
-      <li class="active">
+      <li class="{{ isActiveRoute(['dashboard']) }}">
         <a href="#">
           <p>
             <img width="22" src="{{ asset('images/icon-dashboard.png') }}" />
@@ -15,8 +15,8 @@
         </a>
       </li>
 
-      <li>
-        <a href="#">
+      <li class="{{ isActiveRoute(['assets.*']) }}">
+        <a href="{{ route('assets.index') }}">
           <p>
             <img width="22" src="{{ asset('images/icon-asset.png') }}" />
             &nbsp;&nbsp;Assets
@@ -24,8 +24,8 @@
         </a>
       </li>
 
-      <li>
-        <a href="#">
+      <li class="{{ isActiveRoute(['components.*']) }}">
+        <a href="{{ route('components.index') }}">
           <p>
             <img width="22" src="{{ asset('images/icon-component.png') }}" />
             &nbsp;&nbsp;Components
