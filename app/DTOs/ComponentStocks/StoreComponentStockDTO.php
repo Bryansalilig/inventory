@@ -1,36 +1,28 @@
 <?php
-namespace App\DTOs\Components;
+namespace App\DTOs\ComponentStocks;
 
-use Illuminate\Http\UploadedFile;
-
-class StoreComponentDTO
+class StoreComponentStockDTO
 {
   public function __construct(
-    public string $name,
+    public int $component_id,
     public string $model_type,
-    public ?string $specification,
     public float $cost,
     public int $quantity,
     public string $supplier,
-    public string $asset_tag,
+    public ?string $specification,
     public string $purchase_date,
-    public ?string $description,
-    public ?UploadedFile $picture,
   ) {}
 
   public static function fromRequest(array $data): self
   {
     return new self(
-      name: $data['name'],
+      component_id: (int) $data['component_id'],
       model_type: $data['model_type'],
-      specification: $data['specification'] ?? null,
       cost: (float) $data['cost'],
       quantity: (int) $data['quantity'],
       supplier: $data['supplier'],
-      asset_tag: $data['asset_tag'],
+      specification: $data['specification'] ?? null,
       purchase_date: $data['purchase_date'],
-      description: $data['description'] ?? null,
-      picture: $data['picture'] ?? null,
     );
   }
 }

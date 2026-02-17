@@ -11,8 +11,10 @@
       <form id="checkoutForm">
         <div class="modal-body">
           <!-- hidden id -->
-          <input type="hidden" id="checkout_id" name="component_id" />
-
+          <input type="hidden" id="component_stock_id" name="component_stock_id" />
+          <input type="hidden" id="component_id" name="component_id" value="{{ $component->id }}" />
+          <input type="hidden" id="asset_tag" name="asset_tag" value="{{ $assetTag }}" />
+          <h4>{{ $component->name . ' ' . '(' . $assetTag . ')' }}</h4>
           <div class="form-group">
             <label for="employee">Employees</label>
             <select class="form-control" name="employee" id="employee" required>
@@ -28,13 +30,14 @@
 
           <div class="form-row">
             <div class="form-group col-md-6">
-              <label for="component_name">Component Name</label>
-              <input type="text" class="form-control" name="component_name" id="component_name" readonly />
+              <label for="model_type">Model Type</label>
+              <input type="text" class="form-control" name="model_type" id="model_type" readonly />
             </div>
 
             <div class="form-group col-md-6">
               <label for="checkout_qty">Quantity</label>
-              <input type="number" class="form-control" name="checkout_qty" id="checkout_qty" min="1" value="1" />
+              <input type="number" class="form-control" name="checkout_qty" id="checkout_qty" value="1" />
+              <span id="stock-message" class="text-danger"></span>
             </div>
           </div>
         </div>

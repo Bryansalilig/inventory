@@ -1,59 +1,36 @@
 <?php
 
-namespace App\Models\ComponentStock;
+namespace App\Models\StockHistory;
 
 use Illuminate\Database\Eloquent\Model;
 
-use App\Models\Component\Component;
+use App\Models\ComponentStock\ComponentStock;
 
-class ComponentStock extends Model
+class StockHistory extends Model
 {
-  // Mass assignable fields
-  protected $fillable = ['component_id', 'model_type', 'cost', 'quantity', 'available_component', 'specification', 'supplier', 'purchase_date'];
+  protected $fillable = ['component_id', 'component_stock_id', 'user_id', 'asset_tag', 'employee_id', 'employee_name', 'employee_position', 'quantity'];
 
-  // Casts
-  protected $casts = [
-    'purchase_date' => 'date',
-    'cost' => 'decimal:2',
-    'quantity' => 'integer',
-    'available_component' => 'integer',
-  ];
-
-  public function component()
+  // Factory method for creating asset from component
+  public static function checkout(ComponentStock $componentStock, int $component_id, int $user_id, string $asset_tag, int $employee_id, string $employee_name, int $quantity): self
   {
-    return $this->belongsTo(Component::class, 'component_id');
+    return new self([
+      'component_stock_id' => $componentStock->id,
+      'component_id' => $component_id,
+      'user_id' => $user_id,
+      'asset_tag' => $asset_tag,
+      'employee_id' => $employee_id,
+      'employee_name' => $employee_name,
+      'quantity' => $quantity,
+    ]);
   }
 
-  // Check if the component is available
-  public function isAvailable(): bool
-  {
-    return $this->available_component > 0;
-  }
-
-  // Decrease stock by checkout qty
-  public function subtractComponent(int $checkout_qty): void
-  {
-    if ($checkout_qty > $this->available_component) {
-      throw new DomainException('Cannot checkout more than available stock.');
-    }
-
-    $this->available_component -= $checkout_qty;
-  }
-
-  /**
-   * Accessor for action buttons
-   * Returns HTML for Edit/Delete buttons
-   */
   public function getActionAttribute()
   {
     $id = $this->id;
     $model_type = $this->model_type;
     $available_component = $this->available_component;
 
-    $detailUrl = route('components.stocks.detail', [
-      'component' => $this->component->id,
-      'stock' => $id,
-    ]);
+    $detailUrl = '';
     $editUrl = route('components.edit', $id);
 
     return '
@@ -100,10 +77,5 @@ class ComponentStock extends Model
             </a>
         </div>
     </div>';
-  }
-
-  public function getQtyDisplayAttribute()
-  {
-    return $this->quantity . ' / ' . $this->available_component;
   }
 }

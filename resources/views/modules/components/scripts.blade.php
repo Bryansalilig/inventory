@@ -14,18 +14,22 @@
               }
 
               return `
-                <div class="img-hover-wrapper">
-                  <img src="${data}" class="dt-thumb" />
-                  <div class="img-hover-preview">
-                    <img src="${data}" />
-                  </div>
-                </div>
-              `;
+                    <div class="img-hover-wrapper">
+                      <img src="${data}" class="dt-thumb" />
+                      <div class="img-hover-preview">
+                        <img src="${data}" />
+                      </div>
+                    </div>
+                  `;
             },
           },
           { data: 'name' },
           { data: 'asset_tag' },
-          { data: 'qty_display' },
+          {
+            data: 'available_component',
+            width: '200px',
+            className: 'text-center',
+          },
           {
             data: 'action',
             orderable: false,
@@ -83,10 +87,10 @@
               }
 
               $('#employee').append(`
-        <option value="${emp.id}" data-fullname="${emp.fullname}" data-position="${pos}">
-            ${emp.fullname} (${pos})
-        </option>
-    `);
+            <option value="${emp.id}" data-fullname="${emp.fullname}" data-position="${pos}">
+                ${emp.fullname} (${pos})
+            </option>
+        `);
             });
           }
         },
@@ -99,51 +103,5 @@
         },
       });
     });
-
-    // $('#checkoutForm').on('submit', function (e) {
-    //   e.preventDefault();
-
-    //   const component_id = $('#checkout_id').val();
-    //   const checkout_qty = $('#checkout_qty').val();
-    //   const selectedOption = $('#employee option:selected');
-    //   const employee_id = selectedOption.val();
-    //   const fullname = selectedOption.data('fullname');
-    //   const position = selectedOption.data('position');
-    //   const checkout_date = $(this).find('input[name="checkout_date"]').val();
-
-    //   const payload = {
-    //     component_id,
-    //     checkout_qty,
-    //     employee_id,
-    //     fullname,
-    //     position,
-    //     checkout_date,
-    //   };
-
-    //   // send via AJAX or normal form submit
-    //   $.ajax({
-    //     url: '{{ route('components.component-checkout') }}', // your backend route
-    //     method: 'POST',
-    //     data: payload,
-    //     success: function (res) {
-    //       Swal.fire({
-    //         icon: 'success',
-    //         title: 'Success',
-    //         text: 'Component checked out successfully!',
-    //         timer: 2000,
-    //         showConfirmButton: false,
-    //       });
-    //       $('#checkoutModal').modal('hide');
-    //       // optional: refresh table
-    //     },
-    //     error: function (err) {
-    //       Swal.fire({
-    //         icon: 'error',
-    //         title: 'Error',
-    //         text: 'Failed to checkout component.',
-    //       });
-    //     },
-    //   });
-    // });
   </script>
 @endpush

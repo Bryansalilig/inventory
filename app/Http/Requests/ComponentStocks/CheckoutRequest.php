@@ -1,5 +1,5 @@
 <?
-namespace App\Http\Requests\Components;
+namespace App\Http\Requests\ComponentStocks;
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -12,19 +12,29 @@ class CheckoutRequest extends FormRequest
 
     public function rules(): array
     {
-        $componentId = $this->input('component_id');
+        $componentId = $this->input('component_stock_id');
 
         // Fetch the component if the ID exists
         $component = null;
         if ($componentId) {
-            $component = \App\Models\Component\Component::find($componentId);
+            $component = \App\Models\ComponentStock\ComponentStock::find($componentId);
         }
 
         return [
+            'component_stock_id' => [
+                'required',
+                'integer',
+                'exists:component_stocks,id',
+            ],
             'component_id' => [
                 'required',
                 'integer',
                 'exists:components,id',
+            ],
+            'asset_tag' => [
+                'required',
+                'string',
+                'max:255',
             ],
             'checkout_qty' => [
                 'required',

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Contracts\Components;
+namespace App\Contracts\ComponentStocks;
 
 use Illuminate\Http\Request;
 
-interface ComponentCheckoutServiceInterface
+interface ComponentStockCheckoutServiceInterface
 {
   /**
    * Get handle checkout

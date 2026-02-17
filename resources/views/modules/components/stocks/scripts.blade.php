@@ -1,10 +1,29 @@
 @push('scripts')
   <script>
     $(document).ready(function () {
-      const url = $('#assetTable').data('url');
+      const detailUrl = $('#stockDetailTable').data('url');
+
+      $.ajax({
+        url: detailUrl,
+        type: 'GET',
+        dataType: 'json',
+        success: function (data) {
+          // Populate table cells
+          $('#model_type').text(data.model_type ?? '-');
+          $('#cost').text(data.cost ? '₱' + parseFloat(data.cost).toLocaleString() : '-');
+          $('#quantity').text(data.quantity ?? '-');
+          $('#available_component').text(data.available_component ?? '-');
+          $('#specification').text(data.specification ?? '-');
+          $('#supplier').text(data.supplier ?? '-');
+          $('#purchase_date').text(data.purchase_date ?? '-');
+          $('#created_at').text(data.created_at ?? '-');
+        },
+      });
+
+      const assetUrl = $('#assetTable').data('url');
 
       $('#assetTable').DataTable({
-        ajax: url,
+        ajax: assetUrl,
         columns: [
           { data: 'model_type' },
           { data: 'cost' },
@@ -42,22 +61,37 @@
         ],
         pageLength: 10, // match $perPage
       });
+
+      const historyUrl = $('#historyTable').data('url');
+
+      $('#historyTable').DataTable({
+        ajax: historyUrl,
+        columns: [{ data: 'asset_tag' }, { data: 'employee_name' }, { data: 'quantity' }, { data: 'user_name' }, { data: 'created_at' }],
+        order: [[0, 'desc']],
+        pageLength: 10, // match $perPage
+        dom: 'Bfrtip',
+        buttons: [],
+      });
     });
 
     $(document).on('click', '.btn-checkout', function () {
       const id = $(this).data('id');
-      const name = $(this).data('name');
+      const model_type = $(this).data('model-type');
+      const available_component = $(this).data('available-component');
+      const component_id = $('#component_id').val();
 
-      // set component_id hidden input
-      $('#checkout_id').val(id);
-      $('#component_name').val(name);
+      // set component_stock_id hidden input
+      $('#component_stock_id').val(id);
+      $('#model_type').val(model_type);
+      setCheckoutQtyInput(available_component);
 
       // clear previous options except the placeholder
       $('#employee').html('<option value="" selected disabled>Select Employee</option>');
 
+      const url = '{{ route('employees.employeeFiltered', ':id') }}'.replace(':id', component_id);
       // fetch employees from API
       $.ajax({
-        url: '/employees', // employees.index route
+        url: url,
         method: 'GET',
         dataType: 'json',
         success: function (res) {
@@ -72,7 +106,7 @@
         <option value="${emp.id}" data-fullname="${emp.fullname}" data-position="${pos}">
             ${emp.fullname} (${pos})
         </option>
-    `);
+        `);
             });
           }
         },
@@ -89,7 +123,9 @@
     $('#checkoutForm').on('submit', function (e) {
       e.preventDefault();
 
-      const component_id = $('#checkout_id').val();
+      const component_stock_id = $('#component_stock_id').val();
+      const component_id = $('#component_id').val();
+      const asset_tag = $('#asset_tag').val();
       const checkout_qty = $('#checkout_qty').val();
       const selectedOption = $('#employee option:selected');
       const employee_id = selectedOption.val();
@@ -98,7 +134,9 @@
       const checkout_date = $(this).find('input[name="checkout_date"]').val();
 
       const payload = {
+        component_stock_id,
         component_id,
+        asset_tag,
         checkout_qty,
         employee_id,
         fullname,
@@ -106,9 +144,11 @@
         checkout_date,
       };
 
-      // send via AJAX or normal form submit
+      // ✅ dynamic route
+      const url = '{{ route('components.stocks.checkout', ':id') }}'.replace(':id', component_stock_id);
+
       $.ajax({
-        url: '{{ route('components.component-checkout') }}', // your backend route
+        url: url,
         method: 'POST',
         data: payload,
         success: function (res) {
@@ -120,7 +160,8 @@
             showConfirmButton: false,
           });
           $('#checkoutModal').modal('hide');
-          // optional: refresh table
+          // ✅ Refresh DataTable only (smooth, no full page reload)
+          $('#assetTable').DataTable().ajax.reload(null, false);
         },
         error: function (err) {
           Swal.fire({
@@ -131,5 +172,32 @@
         },
       });
     });
+
+    function setCheckoutQtyInput(available) {
+      const $input = $('#checkout_qty');
+      const $message = $('#stock-message');
+
+      if (available <= 0) {
+        // Out of stock
+        $input.val(0).attr('min', 0).attr('max', 0).prop('disabled', true);
+
+        $message.text('Out of Stock');
+      } else {
+        // In stock
+        $input.val(1).attr('min', 1).attr('max', available).prop('disabled', false);
+
+        $message.text('');
+      }
+
+      // Enforce boundaries while typing
+      $input.off('input').on('input', function () {
+        let val = parseInt($(this).val(), 10) || 0;
+        const max = parseInt($(this).attr('max'), 10);
+        const min = parseInt($(this).attr('min'), 10);
+
+        if (val > max) $(this).val(max);
+        if (val < min) $(this).val(min);
+      });
+    }
   </script>
 @endpush

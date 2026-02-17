@@ -4,6 +4,8 @@ namespace App\Models\Component;
 
 use Illuminate\Database\Eloquent\Model;
 
+use App\Models\ComponentStock\ComponentStock;
+
 class Component extends Model
 {
   // Mass assignable fields
@@ -55,8 +57,8 @@ class Component extends Model
     </div>';
   }
 
-  // public function getQtyDisplayAttribute()
-  // {
-  //   return $this->quantity . ' / ' . $this->available_component;
-  // }
+  public function stocks()
+  {
+    return $this->hasMany(ComponentStock::class);
+  }
 }

@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Storage;
 
 class ComponentDTO
 {
-  public function __construct(public int $id, public ?string $picture, public string $name, public ?string $asset_tag, public string $qty_display, public string $action) {}
+  public function __construct(public int $id, public ?string $picture, public string $name, public ?string $asset_tag, public int $available_component, public string $action) {}
 
   public static function fromModel(Component $component): self
   {
@@ -16,7 +16,7 @@ class ComponentDTO
       picture: $component->picture ? Storage::url($component->picture) : null,
       name: $component->name,
       asset_tag: $component->asset_tag,
-      qty_display: '20 / 20',
+      available_component: (int) ($component->available_component ?? 0),
       action: $component->action,
     );
   }

@@ -31,6 +31,7 @@
           <div class="card">
             <div class="card-body">
               <div class="table-responsive">
+                <h4>{{ $component->name . ' ' . '(' . $component->asset_tag . ')' }}</h4>
                 <table class="table table-striped table-bordered" id="assetTable" data-url="{{ route('components.stocks.data', $component) }}" width="100%">
                   <thead>
                     <tr>
@@ -62,6 +63,9 @@
       </div>
     </div>
   </section>
+
+  {{-- Check out modal --}}
+  @include('modules.components.stocks.modals')
 @endsection
 
 {{-- Load page specific scripts --}}

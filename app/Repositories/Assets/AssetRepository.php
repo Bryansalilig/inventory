@@ -25,10 +25,15 @@ class AssetRepository implements AssetRepositoryInterface
     $orderDir = $request->input('order.0.dir', 'desc');
     $search = $request->input('search.value');
 
-    $query = Asset::query()->with('component');
+    $query = Asset::query()->with('component', 'stock');
 
     if ($search) {
-      $query->where(fn($q) => $q->where('employee_name', 'like', "%{$search}%")->orWhere('employee_position', 'like', "%{$search}%"));
+      $query->where(
+        fn($q) => $q
+          ->where('employee_name', 'like', "%{$search}%")
+          ->orWhere('employee_position', 'like', "%{$search}%")
+          ->orWhere('asset_tag', 'like', "%{$search}%"),
+      );
     }
 
     $recordsFiltered = $query->count();

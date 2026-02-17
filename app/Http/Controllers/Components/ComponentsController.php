@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 use App\DTOs\Components\StoreComponentDTO;
 
 use App\Contracts\Components\ComponentServiceInterface;
-use App\Contracts\Components\ComponentCheckoutServiceInterface;
 
 use App\Http\Requests\Components\StoreComponentRequest;
 
@@ -23,7 +22,7 @@ class ComponentsController extends Controller
    * within the Forms > Yearly Development.
    */
   // Property to hold the injected implementation
-  public function __construct(protected ComponentServiceInterface $componentService, protected ComponentCheckoutServiceInterface $componentCheckoutService) {}
+  public function __construct(protected ComponentServiceInterface $componentService) {}
 
   /**
    * Display a listing of the resource.
@@ -36,20 +35,6 @@ class ComponentsController extends Controller
   public function getData(Request $request)
   {
     return response()->json($this->componentService->getAllComponent($request));
-  }
-
-  public function checkout(CheckoutRequest $request)
-  {
-    // Just call the service
-    $this->componentCheckoutService->handle($request->validated());
-
-    // If successful, redirect with success flash
-    return redirect()
-      ->route('components.index')
-      ->with('flash', [
-        'type' => 'success',
-        'message' => 'Checkout successfully.',
-      ]);
   }
 
   /**

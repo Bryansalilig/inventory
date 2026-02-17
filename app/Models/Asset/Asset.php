@@ -5,15 +5,21 @@ namespace App\Models\Asset;
 use Illuminate\Database\Eloquent\Model;
 
 use App\Models\Component\Component;
+use App\Models\ComponentStock\ComponentStock;
 
 class Asset extends Model
 {
   // Mass assignable fields
-  protected $fillable = ['component_id', 'employee_id', 'checkout_date', 'quantity'];
+  protected $fillable = ['component_stock_id', 'component_id', 'employee_id', 'asset_tag', 'employee_name', 'employee_position', 'checkout_date', 'quantity'];
 
   public function component()
   {
     return $this->belongsTo(Component::class, 'component_id');
+  }
+
+  public function stock()
+  {
+    return $this->belongsTo(ComponentStock::class, 'component_stock_id');
   }
 
   /**
@@ -69,10 +75,20 @@ class Asset extends Model
   }
 
   // Factory method for creating asset from component
-  public static function fromComponent(Component $component, int $employeeId, string $employeeName, string $employeePosition, string $checkoutDate, int $quantity): self
-  {
+  public static function fromComponent(
+    ComponentStock $componentStock,
+    int $component_id,
+    int $employeeId,
+    string $asset_tag,
+    string $employeeName,
+    string $employeePosition,
+    string $checkoutDate,
+    int $quantity,
+  ): self {
     return new self([
-      'component_id' => $component->id,
+      'component_stock_id' => $componentStock->id,
+      'component_id' => $component_id,
+      'asset_tag' => $asset_tag,
       'employee_id' => $employeeId,
       'employee_name' => $employeeName,
       'employee_position' => $employeePosition,

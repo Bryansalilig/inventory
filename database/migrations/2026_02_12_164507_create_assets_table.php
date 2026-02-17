@@ -12,8 +12,10 @@ return new class extends Migration {
   {
     Schema::create('assets', function (Blueprint $table) {
       $table->id();
-      $table->integer('component_id');
+      $table->unsignedBigInteger('component_stock_id');
+      $table->unsignedBigInteger('component_id');
       $table->integer('employee_id');
+      $table->string('asset_tag');
       $table->string('employee_name');
       $table->string('employee_position');
       $table->date('checkout_date')->nullable();

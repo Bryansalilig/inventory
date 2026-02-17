@@ -15,7 +15,7 @@
 
       <div class="card">
         <div class="card-body p-3">
-          <form method="POST" action="{{ route('components.stocks.store', $component) }}" enctype="multipart/form-data" autocomplete="off">
+          <form method="POST" action="{{ route('components.stocks.store', $component) }}" autocomplete="off">
             @csrf
 
             <input type="hidden" name="component_id" value="{{ $component->id }}" />

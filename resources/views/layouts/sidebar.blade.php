@@ -42,11 +42,11 @@
         </a>
       </li>
 
-      <li>
-        <a href="#">
+      <li class="{{ isActiveRoute(['cubicles.*']) }}">
+        <a href="{{ route('cubicles.index') }}">
           <p>
             <img width="22" src="{{ asset('images/icon-type.png') }}" />
-            &nbsp;&nbsp;Asset Types
+            &nbsp;&nbsp;Cubicles
           </p>
         </a>
       </li>
@@ -107,7 +107,7 @@
 
       <!-- Settings -->
       <li>
-        <a data-bs-toggle="collapse" href="#settingsMenu">
+        <a href="#settingsMenu">
           <p>
             <img width="25" src="{{ asset('images/icon-setting.png') }}" />
             &nbsp;&nbsp;Settings

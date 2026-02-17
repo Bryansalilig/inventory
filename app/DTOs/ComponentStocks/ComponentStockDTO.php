@@ -27,7 +27,7 @@ class ComponentStockDTO
       model_type: $cstock->model_type,
       cost: (float) number_format($cstock->cost, 2, '.', ''),
       quantity: $cstock->quantity,
-      available_cstock: $cstock->available_cstock,
+      available_component: $cstock->available_component,
       specification: $cstock->specification,
       supplier: $cstock->supplier,
       purchase_date: optional($cstock->purchase_date)?->format('Y-m-d'),

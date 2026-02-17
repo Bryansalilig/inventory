@@ -7,6 +7,15 @@ use Illuminate\Http\Request;
 use App\Models\Component\Component;
 
 use App\Contracts\ComponentStocks\ComponentStockServiceInterface;
+use App\Contracts\ComponentStocks\ComponentStockCheckoutServiceInterface;
+use App\Contracts\StockHistory\StockHistoryServiceInterface;
+
+use App\DTOs\ComponentStocks\StoreComponentStockDTO;
+
+use App\Models\ComponentStock\ComponentStock;
+
+use App\Http\Requests\ComponentStocks\StoreComponentStockRequest;
+use App\Http\Requests\ComponentStocks\CheckoutRequest;
 
 class ComponentStockController extends Controller
 {
@@ -17,7 +26,7 @@ class ComponentStockController extends Controller
    * within the Forms > Yearly Development.
    */
   // Property to hold the injected implementation
-  public function __construct(protected ComponentStockServiceInterface $componentStockService) {}
+  public function __construct(protected ComponentStockServiceInterface $componentStockService, protected ComponentStockCheckoutServiceInterface $componentStockCheckoutService, protected StockHistoryServiceInterface $stockHistoryService) {}
 
   /**
    * Display a listing of the resource.
@@ -25,14 +34,17 @@ class ComponentStockController extends Controller
 
   public function index(Component $component)
   {
+    $assetTag = $this->componentStockService->generateUniqueAssetTag($component->asset_tag);
+
     return view('modules.components.stocks.index', [
       'component' => $component,
+      'assetTag' => $assetTag,
     ]);
   }
 
-  public function getData(Request $request)
+  public function getData(Component $component, Request $request)
   {
-    return response()->json($this->componentStockService->getAllComponentStock($request));
+    return response()->json($this->componentStockService->getAllComponentStock(componentId: $component->id, filters: $request->only(['draw', 'start', 'length', 'order', 'search'])));
   }
 
   /**
@@ -46,11 +58,50 @@ class ComponentStockController extends Controller
   /**
    * Store a newly created resource in storage.
    */
-  public function store(Request $request)
+  public function store(StoreComponentStockRequest $request)
   {
-    echo '<pre>';
-    print_r($request->all());
-    return;
+    $dto = StoreComponentStockDTO::fromRequest($request->validated());
+
+    $this->componentStockService->store($dto);
+
+    return redirect()
+      ->route('components.stocks.index', $dto->component_id)
+      ->with('flash', ['type' => 'success', 'message' => 'Component Stocks created successfully.']);
+  }
+
+  public function checkout(CheckoutRequest $request)
+  {
+    // Just call the service
+    $this->componentStockCheckoutService->handle($request->validated());
+
+    // If successful, redirect with success flash
+    return redirect()
+      ->route('components.stocks.index', $request->component_id)
+      ->with('flash', [
+        'type' => 'success',
+        'message' => 'Checkout successfully.',
+      ]);
+  }
+
+  /**
+   * Display the specified resource.
+   */
+  public function detail(Component $component, ComponentStock $stock)
+  {
+    return view('modules.components.stocks.detail', [
+      'component' => $component,
+      'stock' => $stock,
+    ]);
+  }
+
+  public function history(Component $component, ComponentStock $stock, Request $request)
+  {
+    return response()->json($this->stockHistoryService->getHistory(componentId: $component->id, componentStockId: $stock->id, filters: $request->only(['draw', 'start', 'length', 'order', 'search'])));
+  }
+
+  public function stockDetail(Component $component, ComponentStock $stock, Request $request)
+  {
+    return response()->json($this->componentStockService->getStockDetail(componentId: $component->id, componentStockId: $stock->id));
   }
 
   /**

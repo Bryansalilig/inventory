@@ -33,7 +33,7 @@
                       <th>Picture</th>
                       <th>Name</th>
                       <th>Model Type</th>
-                      <th>Qty / Avail</th>
+                      <th>Available Component</th>
                       <th>Action</th>
                     </tr>
                   </thead>
@@ -42,7 +42,7 @@
                       <th>Picture</th>
                       <th>Name</th>
                       <th>Model Type</th>
-                      <th>Qty / Avail</th>
+                      <th>Available Component</th>
                       <th>Action</th>
                     </tr>
                   </tfoot>

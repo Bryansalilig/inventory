@@ -17,7 +17,7 @@ class ComponentRepository implements ComponentRepositoryInterface
    */
   public function getAllComponent(Request $request): array
   {
-    $columns = ['id', 'name', 'asset_tag'];
+    $columns = ['id', 'name', 'asset_tag', 'available_component'];
 
     $length = $request->input('length', 10);
     $start = $request->input('start', 0);
@@ -25,7 +25,7 @@ class ComponentRepository implements ComponentRepositoryInterface
     $orderDir = $request->input('order.0.dir', 'desc');
     $search = $request->input('search.value');
 
-    $query = Component::query();
+    $query = Component::query()->withSum('stocks as available_component', 'available_component');
 
     if ($search) {
       $query->where(fn($q) => $q->where('name', 'like', "%{$search}%")->orWhere('asset_tag', 'like', "%{$search}%"));

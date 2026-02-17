@@ -6,6 +6,7 @@ use App\Http\Controllers\Assets\AssetsController;
 use App\Http\Controllers\Components\ComponentsController;
 use App\Http\Controllers\ComponentStocks\ComponentStockController;
 use App\Http\Controllers\Employees\EmployeeAPIController;
+use App\Http\Controllers\Cubicles\CubicleController;
 
 // ----------------------
 // Dashboard
@@ -37,7 +38,6 @@ Route::prefix('components')
     Route::get('/get-data', [ComponentsController::class, 'getData'])->name('getData');
     Route::get('/create', [ComponentsController::class, 'create'])->name('create');
     Route::post('/', [ComponentsController::class, 'store'])->name('store');
-    Route::post('/component-checkout', [ComponentsController::class, 'checkout'])->name('component-checkout');
     Route::get('/{order}/edit', [ComponentsController::class, 'edit'])->name('edit');
     Route::get('/{stock}/show', [ComponentsController::class, 'show'])->name('stock');
     Route::put('/{order}', [ComponentsController::class, 'update'])->name('update');
@@ -53,7 +53,22 @@ Route::prefix('components/{component}/stocks')
     Route::get('/', [ComponentStockController::class, 'index'])->name('index');
     Route::get('/data', [ComponentStockController::class, 'getData'])->name('data');
     Route::get('/create', [ComponentStockController::class, 'create'])->name('create');
+    Route::get('/{stock}/detail', [ComponentStockController::class, 'detail'])->name('detail');
+    Route::get('/{stock}/history', [ComponentStockController::class, 'history'])->name('history');
+    Route::get('/{stock}/stock-detail', [ComponentStockController::class, 'stockDetail'])->name('stockDetail');
     Route::post('/store', [ComponentStockController::class, 'store'])->name('store');
+    Route::post('/checkout', [ComponentStockController::class, 'checkout'])->name('checkout');
+  });
+
+// ----------------------
+// Cubicles Module
+// ----------------------
+Route::prefix('cubicles')
+  ->name('cubicles.')
+  ->group(function () {
+    Route::get('/', [CubicleController::class, 'index'])->name('index');
+    Route::get('/{location}/get-ffc', [ComponentsController::class, 'getFirstFloorCubicle'])->name('getFirstFloorCubicle');
+    Route::get('/last', [CubicleController::class, 'getLastCubicle'])->name('getLastCubicle');
   });
 
 // ----------------------
@@ -63,6 +78,7 @@ Route::prefix('employees')
   ->name('employees.')
   ->group(function () {
     Route::get('/', [EmployeeAPIController::class, 'index'])->name('index');
+    Route::get('/{component}/emp-filtered', [EmployeeAPIController::class, 'employeeFiltered'])->name('employeeFiltered');
   });
 
 // ----------------------
