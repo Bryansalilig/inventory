@@ -352,7 +352,7 @@
   .sidebar .sidebar-wrapper {
     position: relative;
     max-height: none;
-    min-height: 120%;
+    min-height: 100%;
     overflow: hidden;
     /*width: 260px;*/
     z-index: 4;

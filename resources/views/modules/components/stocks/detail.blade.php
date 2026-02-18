@@ -10,7 +10,7 @@
 @section('content')
   <section>
     <div class="content p-4">
-      <div class="row pt-3">
+      <div class="row">
         <div class="col-md-8">
           <h3>Component Stock Detail</h3>
         </div>

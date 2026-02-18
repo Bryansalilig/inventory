@@ -78,8 +78,8 @@
         </a>
       </li>
 
-      <li>
-        <a href="#">
+      <li class="{{ isActiveRoute(['employees.*']) }}">
+        <a href="{{ route('employees.index') }}">
           <p>
             <img width="25" src="{{ asset('images/icon-employee.png') }}" />
             &nbsp;&nbsp;Employees

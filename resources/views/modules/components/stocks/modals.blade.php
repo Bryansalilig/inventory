@@ -14,6 +14,7 @@
           <input type="hidden" id="component_stock_id" name="component_stock_id" />
           <input type="hidden" id="component_id" name="component_id" value="{{ $component->id }}" />
           <input type="hidden" id="asset_tag" name="asset_tag" value="{{ $assetTag }}" />
+          <input type="hidden" id="component_name" name="component_name" value="{{ $component->name }}" />
           <h4>{{ $component->name . ' ' . '(' . $assetTag . ')' }}</h4>
           <div class="form-group">
             <label for="employee">Employees</label>

@@ -83,12 +83,12 @@
       // set component_stock_id hidden input
       $('#component_stock_id').val(id);
       $('#model_type').val(model_type);
-      setCheckoutQtyInput(available_component);
+      setCheckoutQtyInput($('#component_name').val());
 
       // clear previous options except the placeholder
       $('#employee').html('<option value="" selected disabled>Select Employee</option>');
 
-      const url = '{{ route('employees.employeeFiltered', ':id') }}'.replace(':id', component_id);
+      const url = '{{ route('employees-api.employeeFiltered', ':id') }}'.replace(':id', component_id);
       // fetch employees from API
       $.ajax({
         url: url,
@@ -173,21 +173,14 @@
       });
     });
 
-    function setCheckoutQtyInput(available) {
+    function setCheckoutQtyInput(componentName) {
       const $input = $('#checkout_qty');
       const $message = $('#stock-message');
 
-      if (available <= 0) {
-        // Out of stock
-        $input.val(0).attr('min', 0).attr('max', 0).prop('disabled', true);
+      let maxQty = componentName === 'Monitor' ? 2 : 1;
 
-        $message.text('Out of Stock');
-      } else {
-        // In stock
-        $input.val(1).attr('min', 1).attr('max', available).prop('disabled', false);
-
-        $message.text('');
-      }
+      $input.val(1).attr('min', 1).attr('max', maxQty).prop('disabled', false);
+      $message.text('');
 
       // Enforce boundaries while typing
       $input.off('input').on('input', function () {

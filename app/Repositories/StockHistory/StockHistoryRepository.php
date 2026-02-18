@@ -46,4 +46,14 @@ class StockHistoryRepository implements StockHistoryRepositoryInterface
       'data' => StockHistoryDTO::collection($data),
     ];
   }
+
+  /**
+   * Store a StockHistory model instance.
+   *
+   * @param  \App\Models\StockHistory\StockHistory  $history
+   */
+  public function store(StockHistory $history)
+  {
+    $history->save();
+  }
 }

@@ -7,6 +7,10 @@ use Illuminate\Http\Request;
 
 use App\Contracts\Cubicles\CubicleServiceInterface;
 
+use App\Http\Requests\Cubicles\StoreCubicleRequest;
+
+use App\DTOs\Cubicles\StoreCubicleDTO;
+
 use App\Models\Cubicle\Cubicle;
 
 class CubicleController extends Controller
@@ -31,6 +35,7 @@ class CubicleController extends Controller
       ->where('name', 'like', $request->type . '%')
       ->orderByRaw('LENGTH(name) DESC')
       ->orderBy('name', 'DESC')
+      ->lockForUpdate()
       ->first();
 
     return response()->json([
@@ -38,7 +43,7 @@ class CubicleController extends Controller
     ]);
   }
 
-  public function getFirstFloorCubicle(int $location)
+  public function getCubicles(int $location, Request $request)
   {
     return response()->json($this->cubicleService->getAllCubicle(location: $location, filters: $request->only(['draw', 'start', 'length', 'order', 'search'])));
   }
@@ -54,9 +59,19 @@ class CubicleController extends Controller
   /**
    * Store a newly created resource in storage.
    */
-  public function store(Request $request)
+  public function store(StoreCubicleRequest $request)
   {
-    //
+    $dto = StoreCubicleDTO::fromRequest($request->validated());
+
+    $this->cubicleService->store($dto);
+
+    return response()->json(
+      [
+        'status' => 'success',
+        'message' => 'Cubicle/s created successfully.',
+      ],
+      201,
+    );
   }
 
   /**

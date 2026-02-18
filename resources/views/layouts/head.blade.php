@@ -11,6 +11,8 @@
   <link rel="stylesheet" href="{{ asset('css/font-awesome.min.css') }}" type="text/css" />
   <link rel="stylesheet" href="{{ asset('plugin/datatables2/datatables.min.css') }}" />
   <link rel="stylesheet" href="{{ asset('css/datepicker.css') }}" />
+  <!-- Toastr CSS -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
 
   {{-- Page specific CSS --}}
   @stack('styles')

@@ -8,17 +8,18 @@
         </button>
       </div>
 
-      <form id="cubicleForm">
+      <form id="cubicleForm" action="{{ route('cubicles.store') }}">
         <div class="modal-body">
           <!-- hidden id -->
           <div class="form-group">
             <label for="location">Location</label>
             <select class="form-control" name="location" id="location" required>
               <option value="" disabled selected>Select Location</option>
-              <option value="1">First Floor (1)</option>
-              <option value="2">Second Floor (2)</option>
-              <option value="3">Third Floor (3)</option>
-              <option value="4">Fourth Floor (4)</option>
+              <option value="1">HR Floor</option>
+              <option value="2">First Floor (1)</option>
+              <option value="3">Second Floor (2)</option>
+              <option value="4">Third Floor (3)</option>
+              <option value="5">Fourth Floor (4)</option>
             </select>
           </div>
 
@@ -34,19 +35,19 @@
 
           <div class="form-group">
             <label for="last_cubicle">Last Cubicle</label>
-            <input type="text" class="form-control" id="last_cubicle" readonly />
+            <input type="text" class="form-control" id="last_cubicle" name="last_cubicle" readonly />
           </div>
 
           <div class="form-group">
             <label for="quantity">Quantity</label>
-            <input type="number" class="form-control" name="quantity" id="quantity" value="1" />
+            <input type="number" class="form-control" name="quantity" id="quantity" value="1" min="1" max="100" />
             <span id="stock-message" class="text-danger"></span>
           </div>
         </div>
 
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-          <button type="submit" class="btn btn-primary">Confirm Checkout</button>
+          <button type="submit" class="btn btn-primary">Submit</button>
         </div>
       </form>
     </div>

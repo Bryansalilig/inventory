@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'Components')
+@section('title', 'Employees')
 
 @push('styles')
   {{-- @include('modules.components.styles') --}}
@@ -12,14 +12,16 @@
     <div class="content p-4">
       <div class="row">
         <div class="col-md-6">
-          <h3>Component List</h3>
+          <h3>Employee List</h3>
         </div>
-        <div class="col-md-6 text-md-right pb-md-0 pb-3">
+        {{--
+          <div class="col-md-6 text-md-right pb-md-0 pb-3">
           <a href="{{ route('components.create') }}" class="btn btn-sm btn-fill btn-primary">
-            <i class="fa fa-plus"></i>
-            Add Component
+          <i class="fa fa-plus"></i>
+          Add Component
           </a>
-        </div>
+          </div>
+        --}}
       </div>
 
       <div class="row">
@@ -27,22 +29,30 @@
           <div class="card">
             <div class="card-body">
               <div class="table-responsive">
-                <table class="table table-striped table-bordered" id="assetTable" width="100%">
+                <table class="table table-striped table-bordered" id="employeeTable" width="100%">
                   <thead>
                     <tr>
-                      <th>Picture</th>
-                      <th>Name</th>
-                      <th>Model Type</th>
-                      <th>Available Component</th>
+                      <th>Employee Name</th>
+                      <th>Cubicle</th>
+                      <th>CPU</th>
+                      <th>Keyboard</th>
+                      <th>Mouse</th>
+                      <th>Headset</th>
+                      <th>Monitor</th>
+                      <th>Camera</th>
                       <th>Action</th>
                     </tr>
                   </thead>
                   <tfoot>
                     <tr>
-                      <th>Picture</th>
-                      <th>Name</th>
-                      <th>Model Type</th>
-                      <th>Available Component</th>
+                      <th>Employee Name</th>
+                      <th>Cubicle</th>
+                      <th>CPU</th>
+                      <th>Keyboard</th>
+                      <th>Mouse</th>
+                      <th>Headset</th>
+                      <th>Monitor</th>
+                      <th>Camera</th>
                       <th>Action</th>
                     </tr>
                   </tfoot>
@@ -57,4 +67,4 @@
 @endsection
 
 {{-- Load page specific scripts --}}
-@include('modules.components.scripts')
+@include('modules.employees.scripts')

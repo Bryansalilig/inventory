@@ -18,6 +18,9 @@
 
 <script src="{{ asset('plugin/datatables2/datatables.min.js') }}"></script>
 
+<!-- Toastr JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
 <!-- App-wide JS -->
 <script src="{{ asset('js/general.js') }}"></script>
 

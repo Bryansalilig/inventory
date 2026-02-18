@@ -6,6 +6,7 @@ use App\Http\Controllers\Assets\AssetsController;
 use App\Http\Controllers\Components\ComponentsController;
 use App\Http\Controllers\ComponentStocks\ComponentStockController;
 use App\Http\Controllers\Employees\EmployeeAPIController;
+use App\Http\Controllers\Employees\EmployeeController;
 use App\Http\Controllers\Cubicles\CubicleController;
 
 // ----------------------
@@ -67,30 +68,27 @@ Route::prefix('cubicles')
   ->name('cubicles.')
   ->group(function () {
     Route::get('/', [CubicleController::class, 'index'])->name('index');
-    Route::get('/{location}/get-ffc', [ComponentsController::class, 'getFirstFloorCubicle'])->name('getFirstFloorCubicle');
+    Route::get('/{location}/get-cubicles', [CubicleController::class, 'getCubicles'])->name('getCubicles');
     Route::get('/last', [CubicleController::class, 'getLastCubicle'])->name('getLastCubicle');
+    Route::post('/store', [CubicleController::class, 'store'])->name('store');
+  });
+
+// ----------------------
+// Employees Module
+// ----------------------
+Route::prefix('employees')
+  ->name('employees.')
+  ->group(function () {
+    Route::get('/', [EmployeeController::class, 'index'])->name('index');
+    Route::get('/get-data', [EmployeeController::class, 'getData'])->name('getData');
   });
 
 // ----------------------
 // EmployeeAPI Module
 // ----------------------
-Route::prefix('employees')
-  ->name('employees.')
+Route::prefix('employees-api')
+  ->name('employees-api.')
   ->group(function () {
     Route::get('/', [EmployeeAPIController::class, 'index'])->name('index');
     Route::get('/{component}/emp-filtered', [EmployeeAPIController::class, 'employeeFiltered'])->name('employeeFiltered');
   });
-
-// ----------------------
-// Suppliers Module
-// ----------------------
-// Route::prefix('suppliers')
-//   ->name('suppliers.')
-//   ->group(function () {
-//     Route::get('/', [SupplierController::class, 'index'])->name('index');
-//     Route::get('/create', [SupplierController::class, 'create'])->name('create');
-//     Route::post('/', [SupplierController::class, 'store'])->name('store');
-//     Route::get('/{supplier}/edit', [SupplierController::class, 'edit'])->name('edit');
-//     Route::put('/{supplier}', [SupplierController::class, 'update'])->name('update');
-//     Route::delete('/{supplier}', [SupplierController::class, 'destroy'])->name('destroy');
-//   });

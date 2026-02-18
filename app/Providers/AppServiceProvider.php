@@ -38,6 +38,12 @@ use App\Repositories\Cubicles\CubicleRepository;
 use App\Contracts\Cubicles\CubicleServiceInterface;
 use App\Contracts\Cubicles\CubicleRepositoryInterface;
 
+// Employees Services & Contracts & Repository
+use App\Services\Employees\EmployeeService;
+use App\Repositories\Employees\EmployeeRepository;
+use App\Contracts\Employees\EmployeeServiceInterface;
+use App\Contracts\Employees\EmployeeRepositoryInterface;
+
 // EmployeeAPI Services & Contracts & Repository
 use App\Services\Employees\EmployeeApiService;
 use App\Contracts\Employees\EmployeeApiServiceInterface;
@@ -61,6 +67,8 @@ class AppServiceProvider extends ServiceProvider
     $this->app->bind(EmployeeApiServiceInterface::class, EmployeeApiService::class);
     $this->app->bind(CubicleServiceInterface::class, CubicleService::class);
     $this->app->bind(CubicleRepositoryInterface::class, CubicleRepository::class);
+    $this->app->bind(EmployeeServiceInterface::class, EmployeeService::class);
+    $this->app->bind(EmployeeRepositoryInterface::class, EmployeeRepository::class);
   }
 
   /**

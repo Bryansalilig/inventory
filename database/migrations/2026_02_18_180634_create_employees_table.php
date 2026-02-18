@@ -10,13 +10,11 @@ return new class extends Migration {
    */
   public function up(): void
   {
-    Schema::create('employee_cubicles', function (Blueprint $table) {
+    Schema::create('employees', function (Blueprint $table) {
       $table->id();
-      $table->unsignedBigInteger('cubicle_id');
       $table->unsignedBigInteger('employee_id');
+      $table->unsignedBigInteger('cubicle_id');
       $table->string('employee_name');
-      $table->string('employee_position');
-      $table->enum('status', ['Active', 'Deactivate'])->default('Active');
       $table->timestamps();
     });
   }
@@ -26,6 +24,6 @@ return new class extends Migration {
    */
   public function down(): void
   {
-    Schema::dropIfExists('employee_cubicles');
+    Schema::dropIfExists('employees');
   }
 };

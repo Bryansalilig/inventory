@@ -42,7 +42,7 @@ class EmployeeAPIController extends Controller
     $employees = $this->employeeService->getForSelect();
 
     // ✅ IF MONITOR
-    if ($component->asset_tag === 'ESSC-Monitor') {
+    if ($component->asset_tag === 'ESCC-Monitor') {
       // Count monitors per employee
       $monitorCountByEmployee = Asset::where('component_id', $component->id)->selectRaw('employee_id, COUNT(*) as total')->groupBy('employee_id')->pluck('total', 'employee_id');
 

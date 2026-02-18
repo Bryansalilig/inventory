@@ -16,12 +16,8 @@ class CubicleRepository implements CubicleRepositoryInterface
    */
   public function getAllCubicleById(int $location, array $filters): array
   {
-    $columns = ['id', 'location'];
-
     $length = $filters['length'] ?? 10;
     $start = $filters['start'] ?? 0;
-    $orderCol = $columns[$filters['order'][0]['column'] ?? 0] ?? 'id';
-    $orderDir = $filters['order'][0]['dir'] ?? 'desc';
     $search = $filters['search']['value'] ?? null;
 
     $baseQuery = Cubicle::query()->where('location', $location);
@@ -36,13 +32,34 @@ class CubicleRepository implements CubicleRepositoryInterface
 
     $recordsFiltered = (clone $baseQuery)->count();
 
-    $data = $baseQuery->orderBy($orderCol, $orderDir)->skip($start)->take($length)->get();
+    $allData = $baseQuery->get()->sort(function ($a, $b) {
+      preg_match('/^([A-Z]+)(\d+)$/', $a->name, $matchA);
+      preg_match('/^([A-Z]+)(\d+)$/', $b->name, $matchB);
+
+      $prefixCmp = strcmp($matchA[1], $matchB[1]);
+      if ($prefixCmp !== 0) {
+        return $prefixCmp;
+      }
+
+      return intval($matchA[2]) <=> intval($matchB[2]);
+    });
+
+    // Reindex after slice
+    $pagedData = $allData->slice($start, $length)->values();
 
     return [
       'draw' => (int) ($filters['draw'] ?? 1),
       'recordsTotal' => $recordsTotal,
       'recordsFiltered' => $recordsFiltered,
-      'data' => CubicleDTO::collection($data),
+      'data' => CubicleDTO::collection($pagedData),
     ];
+  }
+
+  public function storeSingle(int $location, string $name): void
+  {
+    Cubicle::create([
+      'location' => $location,
+      'name' => $name,
+    ]);
   }
 }

@@ -2,7 +2,7 @@
 namespace App\Services\Employees;
 
 use App\Contracts\Employees\EmployeeApiServiceInterface;
-use App\DTOs\Employees\EmployeeDTO;
+use App\DTOs\Employees\EmployeeAPIDTO;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Cache;
 use RuntimeException;
@@ -19,7 +19,7 @@ class EmployeeApiService implements EmployeeApiServiceInterface
   /**
    * Get all employees from API, cached for performance.
    *
-   * @return EmployeeDTO[]
+   * @return EmployeeAPIDTO[]
    */
   public function getAll(): array
   {
@@ -34,8 +34,8 @@ class EmployeeApiService implements EmployeeApiServiceInterface
 
       $data = $response->json()['data'] ?? [];
 
-      // Map raw array to EmployeeDTO objects
-      return array_map(fn($e) => new EmployeeDTO(id: $e['id'], fullname: $e['fullname'] ?? ($e['name'] ?? ''), email: $e['email'] ?? null, position: $e['position_name'] ?? null), $data);
+      // Map raw array to EmployeeAPIDTO objects
+      return array_map(fn($e) => new EmployeeAPIDTO(id: $e['id'], fullname: $e['fullname'] ?? ($e['name'] ?? ''), email: $e['email'] ?? null, position: $e['position_name'] ?? null), $data);
     });
   }
 
@@ -47,7 +47,7 @@ class EmployeeApiService implements EmployeeApiServiceInterface
   public function getForSelect(): array
   {
     return array_map(
-      fn(EmployeeDTO $e) => [
+      fn(EmployeeAPIDTO $e) => [
         'id' => $e->id,
         'fullname' => $e->fullname,
         'email' => $e->email,

@@ -10,7 +10,7 @@
 @section('content')
   <section>
     <div class="content p-4">
-      <div class="row pt-3">
+      <div class="row">
         <div class="col-md-6">
           <h3>Cubicle Floor List</h3>
         </div>
@@ -30,7 +30,10 @@
                 <div class="col-md-12">
                   <ul class="nav nav-tabs" role="tablist">
                     <li class="nav-item">
-                      <a class="nav-link active" data-toggle="tab" href="#first_floor">First Floor (1)</a>
+                      <a class="nav-link active" data-toggle="tab" href="#hr_floor">HR Floor</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" data-toggle="tab" href="#first_floor">First Floor (1)</a>
                     </li>
                     <li class="nav-item">
                       <a class="nav-link" data-toggle="tab" href="#second_floor">Second Floor (2)</a>
@@ -44,10 +47,10 @@
                   </ul>
 
                   <div class="tab-content">
-                    <!-- First Floor TAB -->
-                    <div class="tab-pane fade show active" id="first_floor">
-                      <div class="table-responsive pt-4">
-                        <table class="table table-striped table-bordered" id="firstFloorTable" data-url="{{ route('cubicles.getFirstFloorCubicle', 1) }}">
+                    <!-- HR Floor TAB -->
+                    <div class="tab-pane fade show active" id="hr_floor">
+                      <div class="table-responsive">
+                        <table class="table table-striped table-bordered" id="HRFloorTable" data-url="{{ route('cubicles.getCubicles', 1) }}">
                           <thead>
                             <tr>
                               <th>Cubicle Name</th>
@@ -56,22 +59,46 @@
                               <th>Action</th>
                             </tr>
                           </thead>
-                          <tbody>
+                          <tfoot>
                             <tr>
                               <th>Cubicle Name</th>
                               <th>Stutus</th>
                               <th>Assigned To</th>
                               <th>Action</th>
                             </tr>
-                          </tbody>
+                          </tfoot>
+                        </table>
+                      </div>
+                    </div>
+
+                    <!-- First Floor TAB -->
+                    <div class="tab-pane fade" id="first_floor">
+                      <div class="table-responsive">
+                        <table class="table table-striped table-bordered" id="firstFloorTable" data-url="{{ route('cubicles.getCubicles', 2) }}" width="100%">
+                          <thead>
+                            <tr>
+                              <th>Cubicle Name</th>
+                              <th>Stutus</th>
+                              <th>Assigned To</th>
+                              <th>Action</th>
+                            </tr>
+                          </thead>
+                          <tfoot>
+                            <tr>
+                              <th>Cubicle Name</th>
+                              <th>Stutus</th>
+                              <th>Assigned To</th>
+                              <th>Action</th>
+                            </tr>
+                          </tfoot>
                         </table>
                       </div>
                     </div>
 
                     <!-- Second Floor TAB -->
                     <div class="tab-pane fade" id="second_floor">
-                      <div class="table-responsive pt-4">
-                        <table class="table table-striped table-bordered">
+                      <div class="table-responsive">
+                        <table class="table table-striped table-bordered" id="secondFloorTable" data-url="{{ route('cubicles.getCubicles', 3) }}" width="100%">
                           <thead>
                             <tr>
                               <th>Cubicle Name</th>
@@ -80,14 +107,14 @@
                               <th>Action</th>
                             </tr>
                           </thead>
-                          <tbody>
+                          <tfoot>
                             <tr>
                               <th>Cubicle Name</th>
                               <th>Stutus</th>
                               <th>Assigned To</th>
                               <th>Action</th>
                             </tr>
-                          </tbody>
+                          </tfoot>
                         </table>
                       </div>
                     </div>
@@ -95,25 +122,23 @@
                     <!-- Third Floor -->
                     <div class="tab-pane fade" id="third_floor">
                       <div class="table-responsive">
-                        <table class="table table-striped table-bordered" id="historyTable" data-url="" width="100%">
+                        <table class="table table-striped table-bordered" id="thirdFloorTable" data-url="{{ route('cubicles.getCubicles', 4) }}" width="100%">
                           <thead>
                             <tr>
-                              <th>Asset Tag</th>
-                              <th>Deployed To</th>
-                              <th>Quantity</th>
-                              <th>Created By</th>
-                              <th>Created At</th>
+                              <th>Cubicle Name</th>
+                              <th>Stutus</th>
+                              <th>Assigned To</th>
+                              <th>Action</th>
                             </tr>
                           </thead>
-                          <tbody>
+                          <tfoot>
                             <tr>
-                              <th>Asset Tag</th>
-                              <th>Deployed To</th>
-                              <th>Quantity</th>
-                              <th>Created By</th>
-                              <th>Created At</th>
+                              <th>Cubicle Name</th>
+                              <th>Stutus</th>
+                              <th>Assigned To</th>
+                              <th>Action</th>
                             </tr>
-                          </tbody>
+                          </tfoot>
                         </table>
                       </div>
                     </div>
@@ -121,25 +146,23 @@
                     <!-- Fourth Floor -->
                     <div class="tab-pane fade" id="fourth_floor">
                       <div class="table-responsive">
-                        <table class="table table-striped table-bordered" id="historyTable" data-url="" width="100%">
+                        <table class="table table-striped table-bordered" id="fourthFloorTable" data-url="{{ route('cubicles.getCubicles', 5) }}" width="100%">
                           <thead>
                             <tr>
-                              <th>Asset Tag</th>
-                              <th>Deployed To</th>
-                              <th>Quantity</th>
-                              <th>Created By</th>
-                              <th>Created At</th>
+                              <th>Cubicle Name</th>
+                              <th>Stutus</th>
+                              <th>Assigned To</th>
+                              <th>Action</th>
                             </tr>
                           </thead>
-                          <tbody>
+                          <tfoot>
                             <tr>
-                              <th>Asset Tag</th>
-                              <th>Deployed To</th>
-                              <th>Quantity</th>
-                              <th>Created By</th>
-                              <th>Created At</th>
+                              <th>Cubicle Name</th>
+                              <th>Stutus</th>
+                              <th>Assigned To</th>
+                              <th>Action</th>
                             </tr>
-                          </tbody>
+                          </tfoot>
                         </table>
                       </div>
                     </div>
