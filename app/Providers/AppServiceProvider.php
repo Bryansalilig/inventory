@@ -44,6 +44,18 @@ use App\Repositories\Employees\EmployeeRepository;
 use App\Contracts\Employees\EmployeeServiceInterface;
 use App\Contracts\Employees\EmployeeRepositoryInterface;
 
+// Maintenance Services & Contracts & Repository
+use App\Services\Maintenance\MaintenanceService;
+use App\Repositories\Maintenance\MaintenanceRepository;
+use App\Contracts\Maintenance\MaintenanceServiceInterface;
+use App\Contracts\Maintenance\MaintenanceRepositoryInterface;
+
+// Logs Services & Contracts & Repository
+use App\Services\Logs\LogService;
+use App\Repositories\Logs\LogRepository;
+use App\Contracts\Logs\LogServiceInterface;
+use App\Contracts\Logs\LogRepositoryInterface;
+
 // EmployeeAPI Services & Contracts & Repository
 use App\Services\Employees\EmployeeApiService;
 use App\Contracts\Employees\EmployeeApiServiceInterface;
@@ -69,6 +81,10 @@ class AppServiceProvider extends ServiceProvider
     $this->app->bind(CubicleRepositoryInterface::class, CubicleRepository::class);
     $this->app->bind(EmployeeServiceInterface::class, EmployeeService::class);
     $this->app->bind(EmployeeRepositoryInterface::class, EmployeeRepository::class);
+    $this->app->bind(MaintenanceServiceInterface::class, MaintenanceService::class);
+    $this->app->bind(MaintenanceRepositoryInterface::class, MaintenanceRepository::class);
+    $this->app->bind(LogServiceInterface::class, LogService::class);
+    $this->app->bind(LogRepositoryInterface::class, LogRepository::class);
   }
 
   /**

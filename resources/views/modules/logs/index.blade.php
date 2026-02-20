@@ -1,8 +1,9 @@
 @extends('layouts.main')
 
-@section('title', 'Assets')
+@section('title', 'Logs')
 
 @push('styles')
+  {{-- @include('modules.components.styles') --}}
   <link rel="stylesheet" href="{{ asset('css/components.css') }}" />
 @endpush
 
@@ -11,7 +12,7 @@
     <div class="content p-4">
       <div class="row">
         <div class="col-md-6">
-          <h3>Asset List</h3>
+          <h3>Logs</h3>
         </div>
       </div>
 
@@ -20,17 +21,17 @@
           <div class="card">
             <div class="card-body">
               <div class="table-responsive">
-                <table class="table table-striped table-bordered" id="assetTable" width="100%">
+                <table class="table table-striped table-bordered" id="logsTable" width="100%">
                   <thead>
                     <tr>
                       <th>Picture</th>
                       <th>Name</th>
                       <th>Model Type</th>
                       <th>Asset Tag</th>
-                      <th>Deployed To</th>
-                      <th>Employee Position</th>
-                      <th>Deployed Date</th>
+                      <th>Assigned By</th>
                       <th>Action</th>
+                      <th>Created By</th>
+                      <th>Created Date</th>
                     </tr>
                   </thead>
                   <tfoot>
@@ -39,10 +40,10 @@
                       <th>Name</th>
                       <th>Model Type</th>
                       <th>Asset Tag</th>
-                      <th>Deployed To</th>
-                      <th>Employee Position</th>
-                      <th>Deployed Date</th>
+                      <th>Assigned By</th>
                       <th>Action</th>
+                      <th>Created By</th>
+                      <th>Created Date</th>
                     </tr>
                   </tfoot>
                 </table>
@@ -53,9 +54,7 @@
       </div>
     </div>
   </section>
-  {{-- Load Modals --}}
-  @include('modules.assets.modals')
 @endsection
 
 {{-- Load page specific scripts --}}
-@include('modules.assets.scripts')
+@include('modules.logs.scripts')

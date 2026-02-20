@@ -29,6 +29,14 @@ class Asset extends Model
   public function getActionAttribute()
   {
     $id = $this->id;
+    $component_id = $this->component->id;
+    $component_stock_id = $this->stock->id;
+    $employee_id = $this->employee_id;
+    $asset_tag = $this->asset_tag;
+    $employee_name = $this->employee_name;
+    $status = $this->status;
+    $name = $this->component->name;
+    $model_type = $this->stock->model_type;
 
     $detailUrl = '';
     $editUrl = route('components.edit', $id);
@@ -41,50 +49,52 @@ class Asset extends Model
         </button>
 
         <div class="dropdown-menu actionmenu">
-            <a class="dropdown-item btn-checkout" href="#"
+            <a class="dropdown-item btn-reassign" href="#"
                 data-id="' .
       $id .
       '"
-                data-toggle="modal" data-target="#checkout">
-                <i class="fa fa-check"></i> Check out
+                data-toggle="modal" data-target="#reassignModal">
+                <i class="fa fa-exchange"></i> Reassign
             </a>
 
-            <div class="dropdown-divider"></div>
-
-            <a class="dropdown-item" href="' .
-      $detailUrl .
-      '">
-                <i class="fa fa-file-text"></i> Detail
-            </a>
-
-            <a class="dropdown-item" href="' .
-      $editUrl .
-      '">
-                <i class="fa fa-pencil"></i> Edit
-            </a>
-
-            <a class="dropdown-item text-danger btn-delete" href="#"
+            <a class="dropdown-item btn-maintenance" href="#"
                 data-id="' .
       $id .
       '"
-                data-toggle="modal" data-target="#deleteModal">
-                <i class="fa fa-trash"></i> Delete
+      data-component-id="' .
+      $component_id .
+      '"
+                data-component-stock-id="' .
+      $component_stock_id .
+      '"
+                data-employee-id="' .
+      $employee_id .
+      '"
+                data-asset-tag="' .
+      $asset_tag .
+      '"
+                data-employee-name="' .
+      $employee_name .
+      '"
+                data-status="' .
+      $status .
+      '"
+                data-name="' .
+      $name .
+      '"
+                data-model-type="' .
+      $model_type .
+      '"
+                data-toggle="modal" data-target="#maintenanceModal">
+                <i class="fa fa-wrench"></i> Maintenance
             </a>
         </div>
     </div>';
   }
 
   // Factory method for creating asset from component
-  public static function fromComponent(
-    ComponentStock $componentStock,
-    int $component_id,
-    int $employeeId,
-    string $asset_tag,
-    string $employeeName,
-    string $employeePosition,
-    string $checkoutDate,
-    int $quantity,
-  ): self {
+  public static function fromComponent(ComponentStock $componentStock, int $component_id, int $employeeId, string $asset_tag, string $employeeName, string $employeePosition, string $checkoutDate, int $quantity): self
+  {
     return new self([
       'component_stock_id' => $componentStock->id,
       'component_id' => $component_id,

@@ -2128,6 +2128,7 @@
     border-radius: 6px;
     display: block;
     margin-top: 10px;
+    margin-left: -20px;
     padding: 0px;
     position: absolute;
     visibility: hidden;

@@ -8,6 +8,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Http\Request;
 
 use App\Models\Asset\Asset;
+use App\Models\Maintenance\Maintenance;
 
 use App\Http\Requests\Components\StoreComponentRequest;
 
@@ -45,20 +46,33 @@ class ComponentStockService implements ComponentStockServiceInterface
 
   public function generateUniqueAssetTag(string $prefix): string
   {
-    $latest = Asset::where('asset_tag', 'LIKE', $prefix . '-%')
+    $latestMaintenance = Maintenance::where('asset_tag', 'LIKE', $prefix . '-%')
       ->orderBy('asset_tag', 'desc')
       ->first();
 
-    if (!$latest) {
-      return $prefix . '-000001';
-    }
+    $latestAsset = Asset::where('asset_tag', 'LIKE', $prefix . '-%')
+      ->orderBy('asset_tag', 'desc')
+      ->first();
 
-    // Extract last 6 digits
-    preg_match('/(\d{6})$/', $latest->asset_tag, $matches);
+    $maintenanceNumber = $this->extractNumber($latestMaintenance?->asset_tag);
+    $assetNumber = $this->extractNumber($latestAsset?->asset_tag);
 
-    $nextNumber = isset($matches[1]) ? (int) $matches[1] + 1 : 1;
+    $highestNumber = max($maintenanceNumber, $assetNumber);
+
+    $nextNumber = $highestNumber + 1;
 
     return $prefix . '-' . str_pad($nextNumber, 6, '0', STR_PAD_LEFT);
+  }
+
+  private function extractNumber(?string $assetTag): int
+  {
+    if (!$assetTag) {
+      return 0;
+    }
+
+    preg_match('/(\d{6})$/', $assetTag, $matches);
+
+    return isset($matches[1]) ? (int) $matches[1] : 0;
   }
 
   public function getStockDetail(int $componentId, int $componentStockId)

@@ -49,6 +49,16 @@ class AssetRepository implements AssetRepositoryInterface
     ];
   }
 
+  public function findById(int $id): Asset
+  {
+    return Asset::findOrFail($id);
+  }
+
+  public function deleteById(int $id): bool
+  {
+    return Asset::destroy($id) > 0;
+  }
+
   public function store(Asset $asset): void
   {
     $asset->save();

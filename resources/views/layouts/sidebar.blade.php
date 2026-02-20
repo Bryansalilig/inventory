@@ -33,8 +33,8 @@
         </a>
       </li>
 
-      <li>
-        <a href="#">
+      <li class="{{ isActiveRoute(['maintenance.*']) }}">
+        <a href="{{ route('maintenance.index') }}">
           <p>
             <img width="22" src="{{ asset('images/icon-maintenance.png') }}" />
             &nbsp;&nbsp;Maintenance
@@ -101,6 +101,15 @@
           <p>
             <img width="25" src="{{ asset('images/icon-report.png') }}" />
             &nbsp;&nbsp;Reports
+          </p>
+        </a>
+      </li>
+
+      <li class="{{ isActiveRoute(['logs.*']) }}">
+        <a href="{{ route('logs.index') }}">
+          <p>
+            <img width="25" src="{{ asset('images/icon-report.png') }}" />
+            &nbsp;&nbsp;Logs
           </p>
         </a>
       </li>

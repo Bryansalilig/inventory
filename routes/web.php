@@ -8,6 +8,8 @@ use App\Http\Controllers\ComponentStocks\ComponentStockController;
 use App\Http\Controllers\Employees\EmployeeAPIController;
 use App\Http\Controllers\Employees\EmployeeController;
 use App\Http\Controllers\Cubicles\CubicleController;
+use App\Http\Controllers\Maintenance\MaintenanceController;
+use App\Http\Controllers\Logs\LogController;
 
 // ----------------------
 // Dashboard
@@ -81,6 +83,27 @@ Route::prefix('employees')
   ->group(function () {
     Route::get('/', [EmployeeController::class, 'index'])->name('index');
     Route::get('/get-data', [EmployeeController::class, 'getData'])->name('getData');
+  });
+
+// ----------------------
+// Maintenance Module
+// ----------------------
+Route::prefix('maintenance')
+  ->name('maintenance.')
+  ->group(function () {
+    Route::get('/', [MaintenanceController::class, 'index'])->name('index');
+    Route::get('/{status}/get-data', [MaintenanceController::class, 'getData'])->name('getData');
+    Route::post('/', [MaintenanceController::class, 'store'])->name('store');
+  });
+
+// ----------------------
+// Logs Module
+// ----------------------
+Route::prefix('logs')
+  ->name('logs.')
+  ->group(function () {
+    Route::get('/', [LogController::class, 'index'])->name('index');
+    Route::get('/get-data', [LogController::class, 'getData'])->name('getData');
   });
 
 // ----------------------
