@@ -5,6 +5,10 @@ namespace App\Http\Controllers\Assets;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
+use App\Http\Requests\Assets\UpdateAssetRequest;
+
+use App\DTOs\Assets\UpdateAssetDTO;
+
 use App\Contracts\Assets\AssetServiceInterface;
 
 class AssetsController extends Controller
@@ -72,9 +76,15 @@ class AssetsController extends Controller
   /**
    * Update the specified resource in storage.
    */
-  public function update(Request $request, string $id)
+  public function update(UpdateAssetRequest $request)
   {
-    //
+    $dto = UpdateAssetDTO::fromArray($request->validated());
+
+    $this->assetService->updateAsset($dto);
+
+    return response()->json([
+      'message' => 'Asset changed successfully.',
+    ]);
   }
 
   /**

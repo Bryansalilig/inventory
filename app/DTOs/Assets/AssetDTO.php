@@ -7,18 +7,7 @@ use Illuminate\Support\Facades\Storage;
 
 class AssetDTO
 {
-  public function __construct(
-    public int $id,
-    public ?string $picture,
-    public string $name,
-    public ?string $model_type,
-    public ?string $asset_tag,
-    public int $employee_id,
-    public string $employee_name,
-    public string $employee_position,
-    public string $checkout_date,
-    public string $action,
-  ) {}
+  public function __construct(public int $id, public ?string $picture, public string $name, public ?string $model_type, public ?string $asset_tag, public ?int $employee_id, public ?string $employee_name, public ?string $employee_position, public string $checkout_date, public string $action) {}
 
   public static function fromModel(Asset $asset): self
   {
@@ -29,8 +18,8 @@ class AssetDTO
       model_type: $asset->stock->model_type,
       asset_tag: $asset->asset_tag,
       employee_id: $asset->employee_id,
-      employee_name: $asset->employee_name,
-      employee_position: $asset->employee_position,
+      employee_name: $asset->employee_name ?? '-',
+      employee_position: $asset->employee_position ?? '-',
       checkout_date: $asset->checkout_date,
       action: $asset->action,
     );

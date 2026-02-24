@@ -16,4 +16,6 @@ interface AssetRepositoryInterface
   public function findById(int $id): Asset;
 
   public function deleteById(int $id): bool;
+
+  public function reassignAsset(int $componentId, string $assetTag, int $newAssetId): void;
 }

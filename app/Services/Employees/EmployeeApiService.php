@@ -7,11 +7,13 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Cache;
 use RuntimeException;
 
+use App\Contracts\Employees\EmployeeRepositoryInterface;
+
 class EmployeeApiService implements EmployeeApiServiceInterface
 {
   protected string $baseUrl;
 
-  public function __construct()
+  public function __construct(private EmployeeRepositoryInterface $employeeRepository)
   {
     $this->baseUrl = config('services.employee_api.url') ?? throw new RuntimeException('EMPLOYEE_API_URL not configured');
   }
@@ -55,5 +57,14 @@ class EmployeeApiService implements EmployeeApiServiceInterface
       ],
       $this->getAll(),
     );
+  }
+
+  public function getEmpDropdown(): array
+  {
+    $employees = collect($this->getForSelect());
+
+    $existingIds = $this->employeeRepository->getExistingEmployeeIds();
+
+    return $employees->reject(fn($emp) => in_array($emp['id'], $existingIds))->values()->toArray();
   }
 }

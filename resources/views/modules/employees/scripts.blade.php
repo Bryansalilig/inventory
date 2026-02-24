@@ -21,6 +21,7 @@
           { data: 'headset_tag', render: dashIfEmpty },
           { data: 'monitor_tags', render: arrayOrDash },
           { data: 'camera_tag', render: dashIfEmpty },
+          { data: 'ups_tag', render: dashIfEmpty },
           {
             data: 'action',
             orderable: false,
@@ -48,6 +49,82 @@
           { extend: 'print', text: '<i class="fa fa-print"></i> Print', className: 'btn btn-primary btn-sm' },
         ],
         pageLength: 10, // match $perPage
+      });
+
+      $(document).on('click', '.btn-employee', function () {
+        const id = $(this).data('id');
+        const employee_id = $(this).data('employee-id');
+
+        $('#id').val(id);
+        $('#employee_id').val(employee_id);
+
+        // clear previous options except the placeholder
+        $('#employee').html('<option value="" selected disabled>Select Employee</option>');
+
+        const url = '{{ route('employees-api.employeeDropdown') }}';
+        // fetch employees from API
+        $.ajax({
+          url: url,
+          method: 'GET',
+          dataType: 'json',
+          success: function (res) {
+            if (res.status === 'success' && res.data.length) {
+              console.log(res.data);
+              res.data.forEach((emp) => {
+                let pos = emp.position ?? 'N/A';
+                if (pos.length > 20) {
+                  pos = pos.substring(0, 20) + '...';
+                }
+
+                $('#employee').append(`
+                  <option value="${emp.id}" data-fullname="${emp.fullname}" data-position="${pos}">
+                      ${emp.fullname} (${pos})
+                  </option>
+                  `);
+              });
+            }
+          },
+          error: function () {
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'Failed to fetch employees. Please try again.',
+            });
+          },
+        });
+      });
+
+      // Submit form via AJAX
+      $('#employeeForm').on('submit', function (e) {
+        e.preventDefault();
+
+        const fullname = $('#employee option:selected').data('fullname');
+        const position = $('#employee option:selected').data('position');
+
+        let formData = $(this).serializeArray();
+
+        formData.push({ name: 'new_employee_name', value: fullname });
+        formData.push({ name: 'new_employee_position', value: position });
+
+        $.ajax({
+          url: '{{ route('employees.updateEmployee') }}',
+          type: 'PUT',
+          data: $.param(formData),
+          success: function (response) {
+            // alert('Employee updated successfully!');
+            // $('#employeeModal').modal('hide');
+            // Store flash in sessionStorage temporarily
+            $('#employeeModal').modal('hide');
+            // Show toast / alert
+
+            toastr.success(response.message);
+
+            location.reload();
+          },
+          error: function () {
+            alert('Something went wrong. Try again.');
+          },
+        });
       });
     });
   </script>

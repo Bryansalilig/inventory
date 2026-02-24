@@ -27,7 +27,7 @@ Route::prefix('assets')
     Route::get('/create', [AssetsController::class, 'create'])->name('create');
     Route::post('/', [AssetsController::class, 'store'])->name('store');
     Route::get('/{asset}/edit', [AssetsController::class, 'edit'])->name('edit');
-    Route::put('/{asset}', [AssetsController::class, 'update'])->name('update');
+    Route::put('/update', [AssetsController::class, 'update'])->name('update');
     Route::delete('/{asset}', [AssetsController::class, 'destroy'])->name('destroy');
   });
 
@@ -82,7 +82,11 @@ Route::prefix('employees')
   ->name('employees.')
   ->group(function () {
     Route::get('/', [EmployeeController::class, 'index'])->name('index');
+    Route::get('/{id}/edit', [EmployeeController::class, 'edit'])->name('edit');
     Route::get('/get-data', [EmployeeController::class, 'getData'])->name('getData');
+    Route::get('/data', [EmployeeController::class, 'data'])->name('data');
+    Route::post('/update', [EmployeeController::class, 'update'])->name('update');
+    Route::put('/re-assign', [EmployeeController::class, 'updateEmployee'])->name('updateEmployee');
   });
 
 // ----------------------
@@ -114,4 +118,5 @@ Route::prefix('employees-api')
   ->group(function () {
     Route::get('/', [EmployeeAPIController::class, 'index'])->name('index');
     Route::get('/{component}/emp-filtered', [EmployeeAPIController::class, 'employeeFiltered'])->name('employeeFiltered');
+    Route::get('/emp-dropdown', [EmployeeAPIController::class, 'employeeDropdown'])->name('employeeDropdown');
   });

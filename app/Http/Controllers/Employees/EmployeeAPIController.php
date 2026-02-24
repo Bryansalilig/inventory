@@ -37,6 +37,16 @@ class EmployeeAPIController extends Controller
     ]);
   }
 
+  public function employeeDropdown()
+  {
+    $employees = $this->employeeService->getEmpDropdown();
+
+    return response()->json([
+      'status' => 'success',
+      'data' => $employees,
+    ]);
+  }
+
   public function employeeFiltered(Component $component)
   {
     $employees = $this->employeeService->getForSelect();

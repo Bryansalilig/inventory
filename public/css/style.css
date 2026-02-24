@@ -2247,7 +2247,7 @@
     position: relative;
     z-index: 1;
 }
-  }
+  
   .card .image {
     width: 100%;
     overflow: hidden;
@@ -3265,7 +3265,7 @@
       font-size: 1em;
     }
   
-    .wrapper {
+    /* .wrapper {
       -webkit-transform: translate3d(0px, 0, 0);
       -moz-transform: translate3d(0px, 0, 0);
       -o-transform: translate3d(0px, 0, 0);
@@ -3278,7 +3278,7 @@
       transition: all 0.33s cubic-bezier(0.685, 0.0473, 0.346, 1);
       left: 0;
       background-color: white;
-    }
+    } */
   
     .navbar .container {
       left: 0;

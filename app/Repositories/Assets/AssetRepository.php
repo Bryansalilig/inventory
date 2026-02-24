@@ -63,4 +63,32 @@ class AssetRepository implements AssetRepositoryInterface
   {
     $asset->save();
   }
+
+  public function getDataByType(int $id, int $component_id)
+  {
+    return Asset::where('component_id', $component_id)->get();
+  }
+
+  public function reassignAsset(int $componentId, string $assetTag, int $newAssetId): void
+  {
+    // Step 1: Get old asset
+    $old = Asset::where('asset_tag', $assetTag)->where('component_id', $componentId)->firstOrFail(); // fail fast if not found
+
+    // Step 2: Get new asset
+    $newAsset = Asset::findOrFail($newAssetId);
+
+    // Step 3: Assign old employee data to new asset
+    $newAsset->update([
+      'employee_id' => $old->employee_id,
+      'employee_name' => $old->employee_name,
+      'employee_position' => $old->employee_position,
+    ]);
+
+    // Step 4: Clear old asset
+    $old->update([
+      'employee_id' => null,
+      'employee_name' => null,
+      'employee_position' => null,
+    ]);
+  }
 }

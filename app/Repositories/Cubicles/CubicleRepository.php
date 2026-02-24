@@ -62,4 +62,12 @@ class CubicleRepository implements CubicleRepositoryInterface
       'name' => $name,
     ]);
   }
+
+  public function getDropdown(): Collection
+  {
+    return Cubicle::query()
+      ->select('id', 'name', 'location') // minimal columns
+      ->orderBy('name')
+      ->get();
+  }
 }

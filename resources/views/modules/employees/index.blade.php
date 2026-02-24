@@ -40,6 +40,7 @@
                       <th>Headset</th>
                       <th>Monitor</th>
                       <th>Camera</th>
+                      <th>UPS</th>
                       <th>Action</th>
                     </tr>
                   </thead>
@@ -53,6 +54,7 @@
                       <th>Headset</th>
                       <th>Monitor</th>
                       <th>Camera</th>
+                      <th>UPS</th>
                       <th>Action</th>
                     </tr>
                   </tfoot>
@@ -64,6 +66,8 @@
       </div>
     </div>
   </section>
+
+  @include('modules.employees.modals')
 @endsection
 
 {{-- Load page specific scripts --}}

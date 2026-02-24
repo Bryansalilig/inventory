@@ -46,6 +46,11 @@ class Employee extends Model
     return $this->hasOne(Asset::class, 'employee_id', 'employee_id')->where('component_id', '9');
   }
 
+  public function ups()
+  {
+    return $this->hasOne(Asset::class, 'employee_id', 'employee_id')->where('component_id', '6');
+  }
+
   // Factory method for creating asset from component
   public static function storeEmployee(int $employee_id, ?string $cubicle_id, string $employee_name): self
   {
@@ -63,9 +68,11 @@ class Employee extends Model
   public function getActionAttribute()
   {
     $id = $this->id;
+    $employee_id = $this->employee_id;
+    $employee_name = $this->employee_name;
 
     $detailUrl = '';
-    $editUrl = route('components.edit', $id);
+    $editUrl = route('employees.edit', $id);
 
     return '
     <div class="btn-group">
@@ -75,21 +82,28 @@ class Employee extends Model
         </button>
 
         <div class="dropdown-menu actionmenu">
-            <a class="dropdown-item btn-checkout" href="#"
+            <a class="dropdown-item btn-employee" href="#"
                 data-id="' .
       $id .
       '"
-                data-toggle="modal" data-target="#checkoutModal">
-                <i class="fa fa-check"></i> Check out
+                data-employee-id="' .
+      $employee_id .
+      '"
+      data-employee-name="' .
+      $employee_name .
+      '"
+                data-toggle="modal" data-target="#employeeModal">
+                <i class="fa fa-user"></i> Employee
+            </a>
+            <a class="dropdown-item btn-cubicle" href="#"
+                data-id="' .
+      $id .
+      '"
+                data-toggle="modal" data-target="#cubicleModal">
+                <i class="fa fa-exchange"></i> Cubicle
             </a>
 
             <div class="dropdown-divider"></div>
-
-            <a class="dropdown-item" href="' .
-      $detailUrl .
-      '">
-                <i class="fa fa-file-text"></i> Detail
-            </a>
 
             <a class="dropdown-item" href="' .
       $editUrl .
@@ -102,7 +116,7 @@ class Employee extends Model
       $id .
       '"
                 data-toggle="modal" data-target="#deleteModal">
-                <i class="fa fa-trash"></i> Delete
+                <i class="fa fa-trash"></i> Deactivate
             </a>
         </div>
     </div>';
