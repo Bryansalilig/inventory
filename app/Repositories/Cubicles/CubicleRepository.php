@@ -65,9 +65,6 @@ class CubicleRepository implements CubicleRepositoryInterface
 
   public function getDropdown(): Collection
   {
-    return Cubicle::query()
-      ->select('id', 'name', 'location') // minimal columns
-      ->orderBy('name')
-      ->get();
+    return Cubicle::query()->whereDoesntHave('employee')->select('id', 'name', 'location')->orderBy('name')->get();
   }
 }

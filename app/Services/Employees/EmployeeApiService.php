@@ -67,4 +67,16 @@ class EmployeeApiService implements EmployeeApiServiceInterface
 
     return $employees->reject(fn($emp) => in_array($emp['id'], $existingIds))->values()->toArray();
   }
+
+  public function getEmpAssetDropdown(int $componentId): array
+  {
+    $employees = collect($this->getForSelect());
+
+    $assignedEmployeeIds = $this->employeeRepository->getEmployeeIdsWithAssignedAssets($componentId);
+
+    // O(1) lookup instead of O(n)
+    $assignedLookup = array_flip($assignedEmployeeIds);
+
+    return $employees->reject(fn($emp) => isset($assignedLookup[$emp['id']]))->values()->toArray();
+  }
 }

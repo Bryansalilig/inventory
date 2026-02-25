@@ -8,17 +8,18 @@ use Illuminate\Support\Collection;
 use Illuminate\Http\Request;
 
 use App\DTOs\Cubicles\StoreCubicleDTO;
+use App\DTOs\Cubicles\CubicleDropDownDTO;
 
 use App\Contracts\Cubicles\CubicleServiceInterface;
 use App\Contracts\Cubicles\CubicleRepositoryInterface;
 
 class CubicleService implements CubicleServiceInterface
 {
-  public function __construct(protected CubicleRepositoryInterface $cubicleRepo) {}
+  public function __construct(protected CubicleRepositoryInterface $cubicleRepository) {}
 
   public function getAllCubicle(int $location, array $filters): array
   {
-    return $this->cubicleRepo->getAllCubicleById($location, $filters);
+    return $this->cubicleRepository->getAllCubicleById($location, $filters);
   }
 
   public function store(StoreCubicleDTO $dto): void
@@ -45,6 +46,13 @@ class CubicleService implements CubicleServiceInterface
 
       throw new \RuntimeException('Failed to store cubicle/s. Please try again.');
     }
+  }
+
+  public function cubicleDropdown()
+  {
+    $cubicles = $this->cubicleRepository->getDropdown();
+
+    return CubicleDropDownDTO::collection($cubicles);
   }
 
   private function parseCubicle(string $code): array

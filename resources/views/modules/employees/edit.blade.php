@@ -98,7 +98,9 @@
           @csrf
           <div class="modal-header">
             <h5 class="modal-title" id="assetModalLabel">Update System Unit</h5>
-            <button type="button" class="btn-close" data-dismiss="modal"></button>
+            <button type="button" class="close" data-dismiss="modal">
+              <span>&times;</span>
+            </button>
           </div>
           <div class="modal-body">
             <input type="hidden" name="component_id" id="component_id" />

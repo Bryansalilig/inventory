@@ -91,4 +91,15 @@ class AssetRepository implements AssetRepositoryInterface
       'employee_position' => null,
     ]);
   }
+
+  public function updateEmpAsset(int $id, int $employeeId, string $employeeName, string $employeePosition): void
+  {
+    $asset = Asset::findOrFail($id); // fail fast if not found
+
+    $asset->update([
+      'employee_id' => $employeeId,
+      'employee_name' => $employeeName,
+      'employee_position' => $employeePosition,
+    ]);
+  }
 }

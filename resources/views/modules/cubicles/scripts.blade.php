@@ -37,8 +37,8 @@
           ajax: url,
           columns: options.columns ?? [
             { data: 'name' },
-            { data: 'location' },
-            { data: 'location' },
+            { data: 'status_badge' },
+            { data: 'employee_name' },
             {
               data: 'action',
               orderable: false,

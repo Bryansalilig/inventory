@@ -78,6 +78,14 @@ class EmployeeRepository implements EmployeeRepositoryInterface
     return Employee::query()->pluck('employee_id')->toArray();
   }
 
+  public function getEmployeeIdsWithAssignedAssets(int $componentId): array
+  {
+    return Asset::where('component_id', $componentId)
+      ->whereNotNull('employee_id') // prevent null pollution
+      ->pluck('employee_id')
+      ->all();
+  }
+
   public function assignEmployee(int $id, string $oldEmployeeId, int $newEmployeeId, string $newEmployeeName, string $newEmployeePosition): void
   {
     // 1️⃣ Bulk update assets (NO foreach)

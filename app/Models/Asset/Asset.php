@@ -41,55 +41,78 @@ class Asset extends Model
     $detailUrl = '';
     $editUrl = route('components.edit', $id);
 
+    $assignButton = '';
+
+    if (empty($employee_id)) {
+      $assignButton =
+        '
+        <a class="dropdown-item btn-assign" href="#"
+            data-id="' .
+        $id .
+        '"
+            data-component-id="' .
+        $component_id .
+        '"
+            data-name="' .
+        $name .
+        '"
+            data-asset-tag="' .
+        $asset_tag .
+        '"
+            data-model-type="' .
+        $model_type .
+        '"
+            data-toggle="modal" data-target="#assignModal">
+            <i class="fa fa-exchange"></i> Assign
+        </a>
+    ';
+    }
+
     return '
-    <div class="btn-group">
-        <button class="btn btn-sm btn-primary dropdown-toggle" type="button"
-            data-toggle="dropdown">
-            <i class="fa fa-ellipsis-h"></i>
-        </button>
+<div class="btn-group">
+    <button class="btn btn-sm btn-primary dropdown-toggle" type="button"
+        data-toggle="dropdown">
+        <i class="fa fa-ellipsis-h"></i>
+    </button>
 
-        <div class="dropdown-menu actionmenu">
-            <a class="dropdown-item btn-reassign" href="#"
-                data-id="' .
+    <div class="dropdown-menu actionmenu">
+        ' .
+      $assignButton .
+      '
+
+        <a class="dropdown-item btn-maintenance" href="#"
+            data-id="' .
       $id .
       '"
-                data-toggle="modal" data-target="#reassignModal">
-                <i class="fa fa-exchange"></i> Reassign
-            </a>
-
-            <a class="dropdown-item btn-maintenance" href="#"
-                data-id="' .
-      $id .
-      '"
-      data-component-id="' .
+            data-component-id="' .
       $component_id .
       '"
-                data-component-stock-id="' .
+            data-component-stock-id="' .
       $component_stock_id .
       '"
-                data-employee-id="' .
+            data-employee-id="' .
       $employee_id .
       '"
-                data-asset-tag="' .
+            data-asset-tag="' .
       $asset_tag .
       '"
-                data-employee-name="' .
+            data-employee-name="' .
       $employee_name .
       '"
-                data-status="' .
+            data-status="' .
       $status .
       '"
-                data-name="' .
+            data-name="' .
       $name .
       '"
-                data-model-type="' .
+            data-model-type="' .
       $model_type .
       '"
-                data-toggle="modal" data-target="#maintenanceModal">
-                <i class="fa fa-wrench"></i> Maintenance
-            </a>
-        </div>
-    </div>';
+            data-toggle="modal" data-target="#maintenanceModal">
+            <i class="fa fa-wrench"></i> Maintenance
+        </a>
+    </div>
+</div>';
   }
 
   // Factory method for creating asset from component

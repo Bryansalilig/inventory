@@ -19,6 +19,55 @@
         $('#maintenanceModal #id').val(id);
       });
 
+      $(document).on('click', '.btn-assign', function () {
+        var id = $(this).data('id');
+        var component_id = $(this).data('component-id');
+        var name = $(this).data('name');
+        var asset_tag = $(this).data('asset-tag');
+        var model_type = $(this).data('model-type');
+        $('#assignModal #d_name').text(name);
+        $('#assignModal #d_asset_tag').text(asset_tag);
+        $('#assignModal #d_model_type').text(model_type);
+        $('#assignModal #assign_asset_tag').val(asset_tag);
+        $('#assignModal #id').val(id);
+        $('#assignModal #component_id').val(component_id);
+
+        // clear previous options except the placeholder
+        $('#employee').html('<option value="" selected disabled>Select Employee</option>');
+
+        const url = '{{ route('employees-api.employeeAssetDropdown', ':id') }}'.replace(':id', component_id);
+        // fetch employees from API
+        $.ajax({
+          url: url,
+          method: 'GET',
+          dataType: 'json',
+          success: function (res) {
+            if (res.status === 'success' && res.data.length) {
+              console.log(res.data);
+              res.data.forEach((emp) => {
+                let pos = emp.position ?? 'N/A';
+                if (pos.length > 20) {
+                  pos = pos.substring(0, 20) + '...';
+                }
+
+                $('#employee').append(`
+                  <option value="${emp.id}" data-fullname="${emp.fullname}" data-position="${emp.position}">
+                      ${emp.fullname} (${pos})
+                  </option>
+                  `);
+              });
+            }
+          },
+          error: function () {
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'Failed to fetch employees. Please try again.',
+            });
+          },
+        });
+      });
+
       $('#assetTable').DataTable({
         ajax: '{{ route('assets.getData') }}',
         columns: [
@@ -105,6 +154,43 @@
           },
           error: function (xhr) {
             handleAjaxError(xhr, $submitButton, 'Move');
+          },
+        });
+      });
+
+      $('#assignForm').submit(function (e) {
+        e.preventDefault();
+
+        const fullname = $('#employee option:selected').data('fullname');
+        const position = $('#employee option:selected').data('position');
+
+        let formData = $(this).serializeArray();
+
+        formData.push({ name: 'employee_name', value: fullname });
+        formData.push({ name: 'employee_position', value: position });
+
+        let $form = $(this);
+        let $submitButton = $form.find('button[type="submit"]');
+
+        $submitButton.prop('disabled', true).text('Assigning...').css('color', 'black');
+
+        $.ajax({
+          url: '{{ route('assets.store') }}',
+          method: 'POST',
+          data: $.param(formData), // ✅ FIXED
+          dataType: 'json',
+          success: function (response) {
+            $('#assignModal').modal('hide');
+            $form[0].reset();
+
+            $submitButton.prop('disabled', false).text('Assign').css('color', '');
+
+            toastr.success(response.message);
+
+            $('#assetTable').DataTable().ajax.reload(null, false);
+          },
+          error: function (xhr) {
+            handleAjaxError(xhr, $submitButton, 'Assign');
           },
         });
       });

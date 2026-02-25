@@ -48,6 +48,19 @@ class CubicleController extends Controller
     return response()->json($this->cubicleService->getAllCubicle(location: $location, filters: $request->only(['draw', 'start', 'length', 'order', 'search'])));
   }
 
+  public function dropDown()
+  {
+    $cubicles = $this->cubicleService->cubicleDropdown();
+
+    // echo '<pre>';
+    // print_r($cubicles);
+    // return;
+    return response()->json([
+      'status' => 'success',
+      'data' => $cubicles,
+    ]);
+  }
+
   /**
    * Show the form for creating a new resource.
    */
@@ -93,10 +106,7 @@ class CubicleController extends Controller
   /**
    * Update the specified resource in storage.
    */
-  public function update(Request $request, string $id)
-  {
-    //
-  }
+  public function update(Request $request, int $id) {}
 
   /**
    * Remove the specified resource from storage.

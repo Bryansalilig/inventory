@@ -77,7 +77,7 @@
                 }
 
                 $('#employee').append(`
-                  <option value="${emp.id}" data-fullname="${emp.fullname}" data-position="${pos}">
+                  <option value="${emp.id}" data-fullname="${emp.fullname}" data-position="${emp.position}">
                       ${emp.fullname} (${pos})
                   </option>
                   `);
@@ -90,6 +90,73 @@
               title: 'Error',
               text: 'Failed to fetch employees. Please try again.',
             });
+          },
+        });
+      });
+
+      $(document).on('click', '.btn-cubicle', function () {
+        const id = $(this).data('id');
+        const employee_name = $(this).data('employee-name');
+
+        $('#cubicleModal #id').val(id);
+        $('#cubicleModal #employee_name').text(employee_name);
+
+        // clear previous options except the placeholder
+        $('#cubicle').html('<option value="" selected disabled>Select Cubicle</option>');
+
+        const url = '{{ route('cubicles.dropDown') }}';
+        // fetch cubicles
+        $.ajax({
+          url: url,
+          method: 'GET',
+          dataType: 'json',
+          success: function (res) {
+            if (res.status === 'success' && res.data.length) {
+              console.log(res.data);
+              res.data.forEach((c) => {
+                $('#cubicle').append(`
+                  <option value="${c.id}" data-cubicle-name="${c.name}" data-location="${c.location}">
+                      ${c.name} (${c.location})
+                  </option>
+                  `);
+              });
+            }
+          },
+          error: function () {
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'Failed to fetch employees. Please try again.',
+            });
+          },
+        });
+      });
+
+      $('#cubicleForm').on('submit', function (e) {
+        e.preventDefault();
+
+        const id = $('#cubicleModal #id').val();
+
+        const url = '{{ route('employees.update', ':id') }}'.replace(':id', id);
+
+        $.ajax({
+          url: url,
+          type: 'POST',
+          data: $(this).serialize(),
+          success: function (response) {
+            $('#cubicleModal').modal('hide');
+
+            // Optional toast (make sure toastr is included)
+            toastr.success(response.message);
+
+            // ✅ Refresh DataTable only (smooth, no full page reload)
+            $('#employeeTable').DataTable().ajax.reload(null, false);
+          },
+          error: function (xhr) {
+            if (xhr.status === 422) {
+              let errors = xhr.responseJSON.errors;
+              $('#stock-message').text(errors.quantity?.[0] ?? '');
+            }
           },
         });
       });
@@ -111,15 +178,15 @@
           type: 'PUT',
           data: $.param(formData),
           success: function (response) {
-            // alert('Employee updated successfully!');
-            // $('#employeeModal').modal('hide');
-            // Store flash in sessionStorage temporarily
             $('#employeeModal').modal('hide');
             // Show toast / alert
 
-            toastr.success(response.message);
+            toastr.success(response.message, null, {
+              timeOut: 1000,
+            });
 
-            location.reload();
+            // ✅ Refresh DataTable only (smooth, no full page reload)
+            $('#employeeTable').DataTable().ajax.reload(null, false);
           },
           error: function () {
             alert('Something went wrong. Try again.');

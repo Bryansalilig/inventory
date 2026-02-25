@@ -99,6 +99,9 @@ class Employee extends Model
                 data-id="' .
       $id .
       '"
+                data-employee-name="' .
+      $employee_name .
+      '"
                 data-toggle="modal" data-target="#cubicleModal">
                 <i class="fa fa-exchange"></i> Cubicle
             </a>

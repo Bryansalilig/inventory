@@ -6,8 +6,10 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use App\Http\Requests\Assets\UpdateAssetRequest;
+use App\Http\Requests\Assets\UpdateEmpAssetRequest;
 
 use App\DTOs\Assets\UpdateAssetDTO;
+use App\DTOs\Assets\UpdateEmpAssetDTO;
 
 use App\Contracts\Assets\AssetServiceInterface;
 
@@ -52,9 +54,15 @@ class AssetsController extends Controller
   /**
    * Store a newly created resource in storage.
    */
-  public function store(Request $request)
+  public function store(UpdateEmpAssetRequest $request)
   {
-    //
+    $dto = UpdateEmpAssetDTO::fromArray($request->validated());
+
+    $this->assetService->updateEmpAsset($dto);
+
+    return response()->json([
+      'message' => 'Employee assigned successfully.',
+    ]);
   }
 
   /**
@@ -79,6 +87,10 @@ class AssetsController extends Controller
   public function update(UpdateAssetRequest $request)
   {
     $dto = UpdateAssetDTO::fromArray($request->validated());
+
+    // echo '<pre>';
+    // print_r($dto);
+    // return;
 
     $this->assetService->updateAsset($dto);
 

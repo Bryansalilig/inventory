@@ -72,6 +72,7 @@ Route::prefix('cubicles')
     Route::get('/', [CubicleController::class, 'index'])->name('index');
     Route::get('/{location}/get-cubicles', [CubicleController::class, 'getCubicles'])->name('getCubicles');
     Route::get('/last', [CubicleController::class, 'getLastCubicle'])->name('getLastCubicle');
+    Route::get('/dropdown', [CubicleController::class, 'dropDown'])->name('dropDown');
     Route::post('/store', [CubicleController::class, 'store'])->name('store');
   });
 
@@ -85,7 +86,7 @@ Route::prefix('employees')
     Route::get('/{id}/edit', [EmployeeController::class, 'edit'])->name('edit');
     Route::get('/get-data', [EmployeeController::class, 'getData'])->name('getData');
     Route::get('/data', [EmployeeController::class, 'data'])->name('data');
-    Route::post('/update', [EmployeeController::class, 'update'])->name('update');
+    Route::post('/update/{id}', [EmployeeController::class, 'update'])->name('update');
     Route::put('/re-assign', [EmployeeController::class, 'updateEmployee'])->name('updateEmployee');
   });
 
@@ -119,4 +120,5 @@ Route::prefix('employees-api')
     Route::get('/', [EmployeeAPIController::class, 'index'])->name('index');
     Route::get('/{component}/emp-filtered', [EmployeeAPIController::class, 'employeeFiltered'])->name('employeeFiltered');
     Route::get('/emp-dropdown', [EmployeeAPIController::class, 'employeeDropdown'])->name('employeeDropdown');
+    Route::get('/{component}/emp-asset-dropdown', [EmployeeAPIController::class, 'employeeAssetDropdown'])->name('employeeAssetDropdown');
   });

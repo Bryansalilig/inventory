@@ -12,6 +12,8 @@ use App\Http\Requests\Employees\UpdateEmployeeRequest;
 
 use App\DTOs\Employees\UpdateEmployeeDTO;
 
+use App\Models\Employee\Employee;
+
 class EmployeeController extends Controller
 {
   /**
@@ -102,11 +104,17 @@ class EmployeeController extends Controller
   /**
    * Update the specified resource in storage.
    */
-  public function update(Request $request)
+  public function update(Request $request, int $id)
   {
-    echo '<pre>';
-    print_r($request->all());
-    return;
+    $validated = $request->validate([
+      'cubicle' => ['required', 'integer', 'exists:cubicles,id'],
+    ]);
+
+    Employee::where('id', $id)->update([
+      'cubicle_id' => $validated['cubicle'],
+    ]);
+
+    return response()->json(['message' => 'Cubicle updated successfully.']);
   }
 
   /**

@@ -19,17 +19,17 @@ class EmployeeAPIController extends Controller
    * within the Forms > Yearly Development.
    */
   // Property to hold the injected implementation
-  protected EmployeeApiServiceInterface $employeeService;
+  protected EmployeeApiServiceInterface $employeeApiService;
 
-  public function __construct(EmployeeApiServiceInterface $employeeService)
+  public function __construct(EmployeeApiServiceInterface $employeeApiService)
   {
     // Assign the injected service to the controller’s property for later use
-    $this->employeeService = $employeeService;
+    $this->employeeApiService = $employeeApiService;
   }
 
   public function index()
   {
-    $employees = $this->employeeService->getForSelect();
+    $employees = $this->employeeApiService->getForSelect();
 
     return response()->json([
       'status' => 'success',
@@ -39,7 +39,17 @@ class EmployeeAPIController extends Controller
 
   public function employeeDropdown()
   {
-    $employees = $this->employeeService->getEmpDropdown();
+    $employees = $this->employeeApiService->getEmpDropdown();
+
+    return response()->json([
+      'status' => 'success',
+      'data' => $employees,
+    ]);
+  }
+
+  public function employeeAssetDropdown(Component $component)
+  {
+    $employees = $this->employeeApiService->getEmpAssetDropdown($component->id);
 
     return response()->json([
       'status' => 'success',
@@ -49,7 +59,7 @@ class EmployeeAPIController extends Controller
 
   public function employeeFiltered(Component $component)
   {
-    $employees = $this->employeeService->getForSelect();
+    $employees = $this->employeeApiService->getForSelect();
 
     // ✅ IF MONITOR
     if ($component->asset_tag === 'ESCC-Monitor') {

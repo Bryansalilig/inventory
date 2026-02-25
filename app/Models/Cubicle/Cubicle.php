@@ -4,9 +4,16 @@ namespace App\Models\Cubicle;
 
 use Illuminate\Database\Eloquent\Model;
 
+use App\Models\Employee\Employee;
+
 class Cubicle extends Model
 {
-  protected $fillable = ['name', 'location'];
+  protected $fillable = ['id', 'name', 'location'];
+
+  public function employee()
+  {
+    return $this->hasOne(Employee::class);
+  }
 
   /**
    * Accessor for action buttons

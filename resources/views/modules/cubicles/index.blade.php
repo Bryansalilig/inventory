@@ -3,7 +3,7 @@
 @section('title', 'Components')
 
 @push('styles')
-  {{-- @include('modules.components.styles') --}}
+  @include('modules.cubicles.styles')
   <link rel="stylesheet" href="{{ asset('css/components.css') }}" />
 @endpush
 
